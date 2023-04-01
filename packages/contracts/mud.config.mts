@@ -15,13 +15,14 @@ export default mudConfig({
       },
       storeArgument: true,
     },
-  Gamefield: {
+    Gamefield: {
       fileSelector: "gamefield",
+      primaryKeys: {},
       schema: {
-        value: "uint8[400]"
+        value: "uint8[]"
       },
       storeArgument: true,
-    },
+    }
   },
   modules: [
     {
