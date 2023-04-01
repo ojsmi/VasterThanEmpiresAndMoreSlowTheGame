@@ -14,19 +14,20 @@ export const createCounterSystem = (layer: PhaserLayer) => {
     },
   } = layer;
 
+  /* use [Has(CounterTable)] query to get data from contract and then pass it to phaserx for rendering */
   defineSystem(world, [Has(CounterTable)], ({ entity }) => {
     const counter = getComponentValue(CounterTable, entity);
+    console.log(entity)
     if (counter == undefined) return;
 
-    const counterObj = objectPool.get(counter.value, "Sprite");
+    const counterObj = objectPool.get(counter.value + entity, "Sprite");
     counterObj.setComponent({
-      id: "sprite",
+      id: "sprite" + entity.toString(),
       once: (sprite) => {
         sprite.play(Animations.SwordsmanIdle);
-
         const coord = {
           x: (counter.value % 10),
-          y: Math.floor(counter.value / 10)
+          y: Math.floor(counter.value / 10) + (entity -39)
         };
         const pixelCoord = tileCoordToPixelCoord(coord, TILE_WIDTH, TILE_HEIGHT);
         sprite.setPosition(pixelCoord.x, pixelCoord.y)
