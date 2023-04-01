@@ -85,9 +85,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint8[]",
-        name: "test",
-        type: "uint8[]",
+        internalType: "uint8[16]",
+        name: "data",
+        type: "uint8[16]",
       },
     ],
     name: "addMap",

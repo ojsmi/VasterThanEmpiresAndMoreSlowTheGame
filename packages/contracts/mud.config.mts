@@ -19,10 +19,18 @@ export default mudConfig({
       fileSelector: "gamefield",
       primaryKeys: {},
       schema: {
-        value: "uint8[]"
+        value: "uint8[16]"
       },
       storeArgument: true,
-    }
+    },
+    PlayerPos: {
+      fileSelector: "playerpos",
+      primaryKeys: {},
+      schema: {
+        value: "uint8"
+      },
+      storeArgument: true,
+    },    
   },
   modules: [
     {

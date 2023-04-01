@@ -29,7 +29,7 @@ import type {
 
 export interface IWorldInterface extends utils.Interface {
   functions: {
-    "addMap(uint8[])": FunctionFragment;
+    "addMap(uint8[16])": FunctionFragment;
     "call(bytes16,bytes16,bytes)": FunctionFragment;
     "deleteRecord(uint256,bytes32[])": FunctionFragment;
     "deleteRecord(bytes16,bytes16,bytes32[])": FunctionFragment;
@@ -402,7 +402,7 @@ export interface IWorld extends BaseContract {
 
   functions: {
     addMap(
-      test: PromiseOrValue<BigNumberish>[],
+      data: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -565,7 +565,7 @@ export interface IWorld extends BaseContract {
   };
 
   addMap(
-    test: PromiseOrValue<BigNumberish>[],
+    data: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -728,7 +728,7 @@ export interface IWorld extends BaseContract {
 
   callStatic: {
     addMap(
-      test: PromiseOrValue<BigNumberish>[],
+      data: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -922,7 +922,7 @@ export interface IWorld extends BaseContract {
 
   estimateGas: {
     addMap(
-      test: PromiseOrValue<BigNumberish>[],
+      data: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1086,7 +1086,7 @@ export interface IWorld extends BaseContract {
 
   populateTransaction: {
     addMap(
-      test: PromiseOrValue<BigNumberish>[],
+      data: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

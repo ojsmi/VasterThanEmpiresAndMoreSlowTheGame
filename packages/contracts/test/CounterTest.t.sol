@@ -43,22 +43,22 @@ contract CounterTest is MudV2Test {
 
   /// lenght dynamic array
   function testMap() public {
-    c.push(88);
-    c.push(2);
-    c.push(3);
-    c.push(4);
-    c.push(5);
-    c.push(6);
-    c.push(7);
-    c.push(8);
-    c.push(9);
-    c.push(10);
+    // c.push(88);
+    // c.push(2);
+    // c.push(3);
+    // c.push(4);
+    // c.push(5);
+    // c.push(6);
+    // c.push(7);
+    // c.push(8);
+    // c.push(9);
+    // c.push(10);
 
-    //uint8[10] memory test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    world.addMap(c);
-    uint8[] memory tile = Gamefield.get(world);
-    console.log(tile[0]);
-    //assertEq(tile, test);
+    uint8[16] memory test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    world.addMap(test);
+    uint8[16] memory tile = Gamefield.get(world);
+    // console.log(tile[0]);
+    assertEq(keccak256(abi.encode(tile)), keccak256(abi.encode(test)));
     //console.log(tile);
   }
 
