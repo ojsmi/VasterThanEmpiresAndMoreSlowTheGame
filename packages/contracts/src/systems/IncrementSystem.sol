@@ -21,14 +21,14 @@ contract IncrementSystem is System {
     return newValue;
   }
 
-  //no fixed§
-  function addMap(uint8[] memory test) public {
+  //no fixed
+  function addMap(uint8[] memory data) public {
     console.log("hey");
     // uint8[10] memory arr;
     // for (uint8 d = 0; d < 10; d = d + 1) {
     //   arr[d] = test[d];
     // }
-    Gamefield.set(test);
+    Gamefield.set(data);
   }
 
   // function plant(uint32 what, index) {}

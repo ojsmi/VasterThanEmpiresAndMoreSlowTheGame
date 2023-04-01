@@ -22,7 +22,15 @@ export default mudConfig({
         value: "uint8[]"
       },
       storeArgument: true,
-    }
+    },
+    PlayerPos: {
+      fileSelector: "playerpos",
+      primaryKeys: {},
+      schema: {
+        value: "uint8"
+      },
+      storeArgument: true,
+    },    
   },
   modules: [
     {
