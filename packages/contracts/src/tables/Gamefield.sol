@@ -30,8 +30,7 @@ library Gamefield {
   }
 
   function getKeySchema() internal pure returns (Schema) {
-    SchemaType[] memory _schema = new SchemaType[](1);
-    _schema[0] = SchemaType.BYTES32;
+    SchemaType[] memory _schema = new SchemaType[](0);
 
     return SchemaLib.encode(_schema);
   }
@@ -66,95 +65,69 @@ library Gamefield {
   }
 
   /** Get value */
-  function get(bytes32 key) internal view returns (uint8[400] memory value) {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function get() internal view returns (uint8[] memory value) {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
-    return toStaticArray_uint8_400(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint8());
+    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint8());
   }
 
   /** Get value (using the specified store) */
-  function get(IStore _store, bytes32 key) internal view returns (uint8[400] memory value) {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function get(IStore _store) internal view returns (uint8[] memory value) {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
     bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
-    return toStaticArray_uint8_400(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint8());
+    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint8());
   }
 
   /** Set value */
-  function set(bytes32 key, uint8[400] memory value) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function set(uint8[] memory value) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 0, EncodeArray.encode(fromStaticArray_uint8_400(value)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 0, EncodeArray.encode((value)));
   }
 
   /** Set value (using the specified store) */
-  function set(IStore _store, bytes32 key, uint8[400] memory value) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function set(IStore _store, uint8[] memory value) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
-    _store.setField(_tableId, _primaryKeys, 0, EncodeArray.encode(fromStaticArray_uint8_400(value)));
+    _store.setField(_tableId, _primaryKeys, 0, EncodeArray.encode((value)));
   }
 
   /** Push an element to value */
-  function push(bytes32 key, uint8 _element) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function push(uint8 _element) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
     StoreSwitch.pushToField(_tableId, _primaryKeys, 0, abi.encodePacked((_element)));
   }
 
   /** Push an element to value (using the specified store) */
-  function push(IStore _store, bytes32 key, uint8 _element) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function push(IStore _store, uint8 _element) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
     _store.pushToField(_tableId, _primaryKeys, 0, abi.encodePacked((_element)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(uint8[400] memory value) internal view returns (bytes memory) {
+  function encode(uint8[] memory value) internal view returns (bytes memory) {
     uint16[] memory _counters = new uint16[](1);
     _counters[0] = uint16(value.length * 1);
     PackedCounter _encodedLengths = PackedCounterLib.pack(_counters);
 
-    return abi.encodePacked(_encodedLengths.unwrap(), EncodeArray.encode(fromStaticArray_uint8_400(value)));
+    return abi.encodePacked(_encodedLengths.unwrap(), EncodeArray.encode((value)));
   }
 
   /* Delete all data for given keys */
-  function deleteRecord(bytes32 key) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function deleteRecord() internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
     StoreSwitch.deleteRecord(_tableId, _primaryKeys);
   }
 
   /* Delete all data for given keys (using the specified store) */
-  function deleteRecord(IStore _store, bytes32 key) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+  function deleteRecord(IStore _store) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
 
     _store.deleteRecord(_tableId, _primaryKeys);
   }
-}
-
-function toStaticArray_uint8_400(uint8[] memory _value) pure returns (uint8[400] memory _result) {
-  // in memory static arrays are just dynamic arrays without the length byte
-  assembly {
-    _result := add(_value, 0x20)
-  }
-}
-
-function fromStaticArray_uint8_400(uint8[400] memory _value) view returns (uint8[] memory _result) {
-  _result = new uint8[](400);
-  uint256 fromPointer;
-  uint256 toPointer;
-  assembly {
-    fromPointer := _value
-    toPointer := add(_result, 0x20)
-  }
-  Memory.copy(fromPointer, toPointer, 12800);
 }
