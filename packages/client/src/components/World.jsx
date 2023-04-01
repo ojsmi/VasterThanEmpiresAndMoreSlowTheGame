@@ -1,9 +1,9 @@
-export const World = ({children}) => {
+export const World = ({children, width, height }) => {
     return <div
         className={`vte-world`}
         style={{
-            width: '100rem',
-            height: '100rem',
+            width: `${width}rem`,
+            height: `${height}rem`,
             display: 'flex',
             flexWrap: 'wrap'
         }}

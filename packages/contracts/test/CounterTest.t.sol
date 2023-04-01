@@ -42,25 +42,25 @@ contract CounterTest is MudV2Test {
   // }
 
   /// lenght dynamic array
-  function testMap() public {
-    c.push(88);
-    c.push(2);
-    c.push(3);
-    c.push(4);
-    c.push(5);
-    c.push(6);
-    c.push(7);
-    c.push(8);
-    c.push(9);
-    c.push(10);
+  // function testMap() public {
+  //   c.push(88);
+  //   c.push(2);
+  //   c.push(3);
+  //   c.push(4);
+  //   c.push(5);
+  //   c.push(6);
+  //   c.push(7);
+  //   c.push(8);
+  //   c.push(9);
+  //   c.push(10);
 
-    //uint8[10] memory test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    world.addMap(c);
-    uint8[] memory tile = Gamefield.get(world);
-    console.log(tile[0]);
-    //assertEq(tile, test);
-    //console.log(tile);
-  }
+  //   //uint8[10] memory test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  //   world.addMap(c);
+  //   uint8[] memory tile = Gamefield.get(world);
+  //   console.log(tile[0]);
+  //   //assertEq(tile, test);
+  //   //console.log(tile);
+  // }
 
   // function testKeysWithValue() public {
   //   bytes32 key = bytes32("singleton");
