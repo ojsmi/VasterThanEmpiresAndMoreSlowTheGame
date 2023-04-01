@@ -19,7 +19,7 @@ export default mudConfig({
       fileSelector: "gamefield",
       primaryKeys: {},
       schema: {
-        value: "uint8[16]"
+        value: "uint8[]"
       },
       storeArgument: true,
     },

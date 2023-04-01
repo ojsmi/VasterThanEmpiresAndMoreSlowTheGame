@@ -21,7 +21,7 @@ contract IncrementSystem is System {
   }
 
   //no fixed
-  function addMap(uint8[16] memory data) public {
+  function addMap(uint8[] memory data) public {
     console.log("hey");
     // uint8[10] memory arr;
     // for (uint8 d = 0; d < 10; d = d + 1) {

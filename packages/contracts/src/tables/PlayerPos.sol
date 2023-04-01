@@ -17,14 +17,14 @@ import { EncodeArray } from "@latticexyz/store/src/tightcoder/EncodeArray.sol";
 import { Schema, SchemaLib } from "@latticexyz/store/src/Schema.sol";
 import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCounter.sol";
 
-uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16(""), bytes16("gamefield"))));
-uint256 constant GamefieldTableId = _tableId;
+uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16(""), bytes16("playerpos"))));
+uint256 constant PlayerPosTableId = _tableId;
 
-library Gamefield {
+library PlayerPos {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](1);
-    _schema[0] = SchemaType.UINT8_ARRAY;
+    _schema[0] = SchemaType.UINT8;
 
     return SchemaLib.encode(_schema);
   }
@@ -39,7 +39,7 @@ library Gamefield {
   function getMetadata() internal pure returns (string memory, string[] memory) {
     string[] memory _fieldNames = new string[](1);
     _fieldNames[0] = "value";
-    return ("Gamefield", _fieldNames);
+    return ("PlayerPos", _fieldNames);
   }
 
   /** Register the table's schema */
@@ -65,56 +65,38 @@ library Gamefield {
   }
 
   /** Get value */
-  function get() internal view returns (uint8[] memory value) {
+  function get() internal view returns (uint8 value) {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
-    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint8());
+    return (uint8(Bytes.slice1(_blob, 0)));
   }
 
   /** Get value (using the specified store) */
-  function get(IStore _store) internal view returns (uint8[] memory value) {
+  function get(IStore _store) internal view returns (uint8 value) {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
-    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint8());
+    return (uint8(Bytes.slice1(_blob, 0)));
   }
 
   /** Set value */
-  function set(uint8[] memory value) internal {
+  function set(uint8 value) internal {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 0, EncodeArray.encode((value)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
   }
 
   /** Set value (using the specified store) */
-  function set(IStore _store, uint8[] memory value) internal {
+  function set(IStore _store, uint8 value) internal {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
-    _store.setField(_tableId, _primaryKeys, 0, EncodeArray.encode((value)));
-  }
-
-  /** Push an element to value */
-  function push(uint8 _element) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](0);
-
-    StoreSwitch.pushToField(_tableId, _primaryKeys, 0, abi.encodePacked((_element)));
-  }
-
-  /** Push an element to value (using the specified store) */
-  function push(IStore _store, uint8 _element) internal {
-    bytes32[] memory _primaryKeys = new bytes32[](0);
-
-    _store.pushToField(_tableId, _primaryKeys, 0, abi.encodePacked((_element)));
+    _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(uint8[] memory value) internal view returns (bytes memory) {
-    uint16[] memory _counters = new uint16[](1);
-    _counters[0] = uint16(value.length * 1);
-    PackedCounter _encodedLengths = PackedCounterLib.pack(_counters);
-
-    return abi.encodePacked(_encodedLengths.unwrap(), EncodeArray.encode((value)));
+  function encode(uint8 value) internal view returns (bytes memory) {
+    return abi.encodePacked(value);
   }
 
   /* Delete all data for given keys */

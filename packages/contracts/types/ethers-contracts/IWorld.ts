@@ -29,7 +29,7 @@ import type {
 
 export interface IWorldInterface extends utils.Interface {
   functions: {
-    "addMap(uint8[16])": FunctionFragment;
+    "addMap(uint8[])": FunctionFragment;
     "call(bytes16,bytes16,bytes)": FunctionFragment;
     "deleteRecord(uint256,bytes32[])": FunctionFragment;
     "deleteRecord(bytes16,bytes16,bytes32[])": FunctionFragment;
