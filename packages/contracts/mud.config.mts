@@ -27,7 +27,7 @@ export default mudConfig({
       fileSelector: "playerpos",
       primaryKeys: {},
       schema: {
-        value: "uint8"
+        value: "uint32"
       },
       storeArgument: true,
     },    

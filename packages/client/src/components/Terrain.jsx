@@ -13,7 +13,7 @@ export const Terrain = ({tiles, width, height}) => {
         >
             {tiles?.value.map(( tileEntity, i) => {        
                 return(          
-                    <Tile id={tileEntity} ></Tile>        
+                    <Tile key={i} id={tileEntity} ></Tile>        
                 );
             })}
         </div>

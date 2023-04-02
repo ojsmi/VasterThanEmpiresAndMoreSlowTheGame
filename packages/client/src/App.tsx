@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {useMemo, useEffect, useState} from 'react';
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
 import { getComponentValue, Has } from "@latticexyz/recs";
@@ -37,8 +37,15 @@ export const App = () => {
     worldContract
   } = useMUD();
   
+
   //console.log( tiles )
   //const tiles = worldData;
+  const tiles = useComponentValue( Gamefield, singletonEntity);
+  //const playerPos = Math.floor( tiles?.length / 2 ?? 0 );//useComponentValue( PlayerPos, singletonEntity );
+  const playerPos = useComponentValue( PlayerPos, singletonEntity );
+
+
+ 
 
   useMemo(async () => {
     console.log( '----> SEND ')
@@ -51,11 +58,11 @@ export const App = () => {
     worldContract.addMap( dataToSend, {gasLimit: 10_000_000, gasPrice: 0, nonce: nunonce });
     // worldSend( "addMap", [[18], { gasLimit: 1_000_000 }]);
     nunonce++;
+
+   // worldContract.setPlayerPos( Math.floor( dataToSend.length / 2 ?? 0 ), {gasLimit: 10_000_000, gasPrice: 0 });
   }, [] );
 
-  const tiles = useComponentValue( Gamefield, singletonEntity);
-  const playerPos = Math.floor( tiles?.length / 2 ?? 0 );//useComponentValue( PlayerPos, singletonEntity );
-
+  
 
   return (
     <>

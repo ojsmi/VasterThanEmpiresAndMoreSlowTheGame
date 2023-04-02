@@ -52,6 +52,7 @@ export interface IWorldInterface extends utils.Interface {
     "setField(bytes16,bytes16,bytes32[],uint8,bytes)": FunctionFragment;
     "setField(uint256,bytes32[],uint8,bytes)": FunctionFragment;
     "setMetadata(uint256,string,string[])": FunctionFragment;
+    "setPlayerPos(uint32)": FunctionFragment;
     "setRecord(bytes16,bytes16,bytes32[],bytes)": FunctionFragment;
     "setRecord(uint256,bytes32[],bytes)": FunctionFragment;
   };
@@ -81,6 +82,7 @@ export interface IWorldInterface extends utils.Interface {
       | "setField(bytes16,bytes16,bytes32[],uint8,bytes)"
       | "setField(uint256,bytes32[],uint8,bytes)"
       | "setMetadata"
+      | "setPlayerPos"
       | "setRecord(bytes16,bytes16,bytes32[],bytes)"
       | "setRecord(uint256,bytes32[],bytes)"
   ): FunctionFragment;
@@ -226,6 +228,10 @@ export interface IWorldInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "setPlayerPos",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setRecord(bytes16,bytes16,bytes32[],bytes)",
     values: [
       PromiseOrValue<BytesLike>,
@@ -315,6 +321,10 @@ export interface IWorldInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setMetadata",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPlayerPos",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -548,6 +558,11 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setPlayerPos(
+      index: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     "setRecord(bytes16,bytes16,bytes32[],bytes)"(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
@@ -711,6 +726,11 @@ export interface IWorld extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setPlayerPos(
+    index: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   "setRecord(bytes16,bytes16,bytes32[],bytes)"(
     namespace: PromiseOrValue<BytesLike>,
     file: PromiseOrValue<BytesLike>,
@@ -869,6 +889,11 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       tableName: PromiseOrValue<string>,
       fieldNames: PromiseOrValue<string>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPlayerPos(
+      index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1068,6 +1093,11 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setPlayerPos(
+      index: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     "setRecord(bytes16,bytes16,bytes32[],bytes)"(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
@@ -1229,6 +1259,11 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       tableName: PromiseOrValue<string>,
       fieldNames: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPlayerPos(
+      index: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
