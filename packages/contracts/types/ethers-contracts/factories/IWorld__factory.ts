@@ -711,6 +711,24 @@ const _abi = [
     inputs: [
       {
         internalType: "uint32",
+        name: "startNumber",
+        type: "uint32",
+      },
+      {
+        internalType: "uint32[]",
+        name: "values",
+        type: "uint32[]",
+      },
+    ],
+    name: "setTilesArray",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
         name: "value",
         type: "uint32",
       },
