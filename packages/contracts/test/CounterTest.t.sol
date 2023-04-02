@@ -28,6 +28,12 @@ contract CounterTest is MudV2Test {
     assertTrue(codeSize > 0);
   }
 
+  function testsetTile() public {
+    world.setTile(1, 50);
+    uint32 val = world.getTile(1);
+    assertEq(val, 50);
+  }
+
   // function testMove() public {
   //   world.setPlayerPos(40);
   //   (uint32 posXv, uint32 posYv) = world.translatePos(40);

@@ -22,10 +22,24 @@ contract IncrementSystem is System {
   }
 
   //no fixed
-  function addMap(uint8[] memory data) public {
-    for(uint256 i; i < data.length; i++){
-      Gamefield.push(data[i]);
-    }
+  // function addMap(uint8[] memory data) public {
+  //   for(uint256 i; i < data.length; i++){
+  //     Gamefield.push(data[i]);
+  //   }
+  // }
+  function setTile(uint32 key, uint32 value) public {
+    bytes32 newKey = keccak256(abi.encodePacked(key));
+    Gamefield.set(newKey, value);
+  }
+
+  // function setTilesArray(uint32[10] keys,uint32[10] values){
+
+  // }
+
+  function getTile(uint32 key) public view returns (uint32) {
+    bytes32 newKey = keccak256(abi.encodePacked(key));
+    uint32 val = Gamefield.get(newKey);
+    return val;
   }
 
   // function plant(uint32 what, index) {}

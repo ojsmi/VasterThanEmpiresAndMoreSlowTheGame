@@ -9,7 +9,6 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -30,7 +29,6 @@ import type {
 
 export interface IWorldInterface extends utils.Interface {
   functions: {
-    "addMap(uint8[])": FunctionFragment;
     "call(bytes16,bytes16,bytes)": FunctionFragment;
     "deleteRecord(uint256,bytes32[])": FunctionFragment;
     "deleteRecord(bytes16,bytes16,bytes32[])": FunctionFragment;
@@ -39,6 +37,7 @@ export interface IWorldInterface extends utils.Interface {
     "getRecord(uint256,bytes32[],bytes32)": FunctionFragment;
     "getRecord(uint256,bytes32[])": FunctionFragment;
     "getSchema(uint256)": FunctionFragment;
+    "getTile(uint32)": FunctionFragment;
     "grantAccess(bytes16,address)": FunctionFragment;
     "grantAccess(bytes16,bytes16,address)": FunctionFragment;
     "increment()": FunctionFragment;
@@ -60,13 +59,13 @@ export interface IWorldInterface extends utils.Interface {
     "setPlayerPos(uint32)": FunctionFragment;
     "setRecord(bytes16,bytes16,bytes32[],bytes)": FunctionFragment;
     "setRecord(uint256,bytes32[],bytes)": FunctionFragment;
+    "setTile(uint32,uint32)": FunctionFragment;
     "translatePos(uint32)": FunctionFragment;
     "translateXY(uint32,uint32)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "addMap"
       | "call"
       | "deleteRecord(uint256,bytes32[])"
       | "deleteRecord(bytes16,bytes16,bytes32[])"
@@ -75,6 +74,7 @@ export interface IWorldInterface extends utils.Interface {
       | "getRecord(uint256,bytes32[],bytes32)"
       | "getRecord(uint256,bytes32[])"
       | "getSchema"
+      | "getTile"
       | "grantAccess(bytes16,address)"
       | "grantAccess(bytes16,bytes16,address)"
       | "increment"
@@ -96,14 +96,11 @@ export interface IWorldInterface extends utils.Interface {
       | "setPlayerPos"
       | "setRecord(bytes16,bytes16,bytes32[],bytes)"
       | "setRecord(uint256,bytes32[],bytes)"
+      | "setTile"
       | "translatePos"
       | "translateXY"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "addMap",
-    values: [PromiseOrValue<BigNumberish>[]]
-  ): string;
   encodeFunctionData(
     functionFragment: "call",
     values: [
@@ -150,6 +147,10 @@ export interface IWorldInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getSchema",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTile",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -266,6 +267,10 @@ export interface IWorldInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "setTile",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "translatePos",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -274,7 +279,6 @@ export interface IWorldInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
 
-  decodeFunctionResult(functionFragment: "addMap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "deleteRecord(uint256,bytes32[])",
@@ -298,6 +302,7 @@ export interface IWorldInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getSchema", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getTile", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "grantAccess(bytes16,address)",
     data: BytesLike
@@ -364,6 +369,7 @@ export interface IWorldInterface extends utils.Interface {
     functionFragment: "setRecord(uint256,bytes32[],bytes)",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "setTile", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "translatePos",
     data: BytesLike
@@ -448,16 +454,11 @@ export interface IWorld extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    addMap(
-      data: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     call(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -502,6 +503,11 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string] & { schema: string }>;
+
+    getTile(
+      key: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     "grantAccess(bytes16,address)"(
       namespace: PromiseOrValue<BytesLike>,
@@ -631,6 +637,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setTile(
+      key: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -643,16 +655,11 @@ export interface IWorld extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  addMap(
-    data: PromiseOrValue<BigNumberish>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   call(
     namespace: PromiseOrValue<BytesLike>,
     file: PromiseOrValue<BytesLike>,
     funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   "deleteRecord(uint256,bytes32[])"(
@@ -697,6 +704,11 @@ export interface IWorld extends BaseContract {
     table: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  getTile(
+    key: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   "grantAccess(bytes16,address)"(
     namespace: PromiseOrValue<BytesLike>,
@@ -826,6 +838,12 @@ export interface IWorld extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setTile(
+    key: PromiseOrValue<BigNumberish>,
+    value: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   translatePos(
     value: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -838,11 +856,6 @@ export interface IWorld extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    addMap(
-      data: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     call(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
@@ -892,6 +905,11 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    getTile(
+      key: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<number>;
 
     "grantAccess(bytes16,address)"(
       namespace: PromiseOrValue<BytesLike>,
@@ -1011,6 +1029,12 @@ export interface IWorld extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setTile(
+      key: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1056,16 +1080,11 @@ export interface IWorld extends BaseContract {
   };
 
   estimateGas: {
-    addMap(
-      data: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     call(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -1109,6 +1128,11 @@ export interface IWorld extends BaseContract {
     getSchema(
       table: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTile(
+      key: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     "grantAccess(bytes16,address)"(
@@ -1239,6 +1263,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setTile(
+      key: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1252,16 +1282,11 @@ export interface IWorld extends BaseContract {
   };
 
   populateTransaction: {
-    addMap(
-      data: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     call(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -1305,6 +1330,11 @@ export interface IWorld extends BaseContract {
     getSchema(
       table: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTile(
+      key: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     "grantAccess(bytes16,address)"(
@@ -1432,6 +1462,12 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       key: PromiseOrValue<BytesLike>[],
       data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTile(
+      key: PromiseOrValue<BigNumberish>,
+      value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

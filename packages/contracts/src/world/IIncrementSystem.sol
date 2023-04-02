@@ -6,5 +6,7 @@ pragma solidity >=0.8.0;
 interface IIncrementSystem {
   function increment() external returns (uint32);
 
-  function addMap(uint8[] memory data) external;
+  function setTile(uint32 key, uint32 value) external;
+
+  function getTile(uint32 key) external returns (uint32);
 }
