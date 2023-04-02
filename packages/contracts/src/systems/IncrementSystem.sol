@@ -23,12 +23,9 @@ contract IncrementSystem is System {
 
   //no fixed
   function addMap(uint8[] memory data) public {
-    console.log("hey");
-    // uint8[10] memory arr;
-    // for (uint8 d = 0; d < 10; d = d + 1) {
-    //   arr[d] = test[d];
-    // }
-    Gamefield.set(data);
+    for(uint256 i; i < data.length; i++){
+      Gamefield.push(data[i]);
+    }
   }
 
   // function plant(uint32 what, index) {}
