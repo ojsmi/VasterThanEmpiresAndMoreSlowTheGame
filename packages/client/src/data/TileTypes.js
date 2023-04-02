@@ -8,7 +8,7 @@ export const TileTypes = {
     PANDO: 6
 }
 
-export const TileTypeToName = {}
+export const TileTypeToName = {};
 TileTypeToName[ TileTypes.DUST ] = 'sand';
 TileTypeToName[ TileTypes.SAND ] = 'mud';
 TileTypeToName[ TileTypes.STONE ] = 'stone';

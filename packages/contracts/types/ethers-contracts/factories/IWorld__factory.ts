@@ -594,6 +594,19 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint32",
+        name: "index",
+        type: "uint32",
+      },
+    ],
+    name: "setPlayerPos",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes16",
         name: "namespace",
         type: "bytes16",

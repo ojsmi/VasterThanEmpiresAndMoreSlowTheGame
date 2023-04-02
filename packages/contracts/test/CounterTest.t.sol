@@ -58,8 +58,8 @@ contract CounterTest is MudV2Test {
     // c.push(10);
 
     //uint8[]] memory test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-    // world.addMap(c);
-    // uint8[] memory tile = Gamefield.get(world);
+    //world.addMap(c);
+    //uint8[] memory tile = Gamefield.get(world);
     // console.log(tile[0]);
     //assertEq(keccak256(abi.encode(tile)), keccak256(abi.encode(test)));
     //console.log(tile);

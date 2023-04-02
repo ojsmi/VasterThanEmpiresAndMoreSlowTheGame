@@ -35,5 +35,20 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    PlayerPos: (() => {
+      const tableId = new TableId("", "playerpos");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }
