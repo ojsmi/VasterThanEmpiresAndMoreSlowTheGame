@@ -11,7 +11,7 @@ export const Terrain = ({tiles, width, height}) => {
                 flexWrap: 'wrap'
             }}
         >
-            {tiles?.value.map(( tileEntity, i) => {        
+            {tiles.map(( tileEntity, i) => {        
                 return(          
                     <Tile key={i} id={tileEntity} ></Tile>        
                 );

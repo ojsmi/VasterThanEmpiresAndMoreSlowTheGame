@@ -15,7 +15,7 @@ export const Others = () => {
         worldSend
     } = useMUD();
 
-    const others = useEntityQuery([Has(PlayerPos)]);
+    const others = useEntityQuery([Has(PlayerPos)]);    
 
     return (
         others.map( ( o ) => {

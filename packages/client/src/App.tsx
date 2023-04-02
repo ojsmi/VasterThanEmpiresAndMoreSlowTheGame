@@ -1,7 +1,7 @@
 import {useMemo, useEffect, useState} from 'react';
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
-import { getComponentValue, Has } from "@latticexyz/recs";
+import { getComponentValue, getComponentValueStrict, Has } from "@latticexyz/recs";
 
 import { Terrain } from "./components/Terrain";
 import { World } from "./components/World";
@@ -28,7 +28,7 @@ const xyToIndex = function( x, y, width ){
 
 const updateWorld = ( tiles ) => {
   console.log('updateWorld()');
-  const currentWorld = [...tiles.value];
+  const currentWorld = [...tiles];
   const indicesOfEffect = [];
   const valuesOfEffect = [];
   for( let i = 0; i < currentWorld.length; i++ ){
@@ -51,6 +51,7 @@ const updateWorld = ( tiles ) => {
       }
     }
   }
+  const result = [];
   if( valuesOfEffect.length > 0 ){
     const lowestTileValue = valuesOfEffect.reduce( (a,b) => Math.min( a, b ) );
     for( let i = 0; i < indicesOfEffect.length; i++ ){
@@ -58,10 +59,16 @@ const updateWorld = ( tiles ) => {
       const value = currentWorld[index];
       if( value === lowestTileValue ){
         currentWorld[ index ] = 99;
+        result.push({
+          key: index,
+          value: 99
+        });
       }
     }
   }
-  return currentWorld;
+  //return currentWorld;
+  const shuffled = result.sort(() => 0.5 - Math.random())
+  return shuffled.slice( 0, 5 );
 }
 
 interface Item {
@@ -85,31 +92,39 @@ export const App = () => {
 
   const [creatingMap, setCreatingMap] = useState(false);
   const [settingPlayer, setSettingPlayer] = useState(false);
+  const [hasPlacedSeed, setHasPlacedSeed] = useState( false );
   
-  const tiles = useComponentValue(Gamefield, singletonEntity);
+  //const tiles = useComponentValue(Gamefield, singletonEntity);
+  const tiles = useEntityQuery([Has(Gamefield)]);
+  console.log('tiles: ', tiles );
   const playerPos = useComponentValue( PlayerPos, playerEntity);
   const networkStatus = useComponentValue(LoadingState, singletonEntity)
 
   useEffect(() => {
-    if(!playerPos && networkStatus?.state === 2 && tiles?.value?.length && tiles.value.length >= dataToSend.length && !settingPlayer) {
+    if(!playerPos && networkStatus?.state === 2 && tiles?.length && tiles?.length >= dataToSend.length && !settingPlayer) {
       setSettingPlayer(true)
       worldSend( "setPlayerPos", [ playerStart, {gasLimit: 1_000_000 }]);
     }
   }, [playerPos, networkStatus, tiles, settingPlayer])
+  
 
-
-  // TODO: update world
-  // useEffect(() => {
-  //   if( !tiles ) return () => {}; 
-  //   const saveWorld = async () => {
-  //     const currentWorld = updateWorld( tiles );
-  //     console.log( 'update currentWorld on chain ' );
-  //     return worldContract.addMap( currentWorld, {gasLimit: 10_000_000, gasPrice: 0 });       
-  //   }
+  //TODO: update world
+  useEffect(() => {
+    if( !tiles ) return () => {}; 
+    const saveWorld = async () => {
+      const tilesValues = tiles.map( (componentId) => { return getComponentValueStrict( Gamefield, componentId ).value } );
+      const cellsToUpdate = updateWorld( tilesValues );
+      console.log( 'update currentWorld on chain ' );
+      cellsToUpdate.forEach( (cell) => {
+        console.log('updating cell: ', cell.key, 'to: ', cell.value );
+        worldSend( "setTile", [cell.key, cell.value, { gasLimit: 30_000_000}])
+      })
+      //return worldContract.addMap( currentWorld, {gasLimit: 10_000_000, gasPrice: 0 });       
+    }
     
-  //   saveWorld();    
-  //   return () => {}
-  // }, [ playerPos ])
+    saveWorld();    
+    return () => {}
+  }, [ playerPos ])
   const BATCH_SIZE = 100;
 
   useEffect(() => {
@@ -117,23 +132,39 @@ export const App = () => {
       const dataToSend = worldData.slice(0,6400).map((item) => {
         return item.type;
       });
-      for(let i = 0; i < Math.ceil(dataToSend.length / BATCH_SIZE); i++) {
-        await worldSend("addMap", [dataToSend.slice(i * BATCH_SIZE, Math.min((i + 1) * BATCH_SIZE, dataToSend.length)), { gasLimit: 30_000_000}])
+      // for(let i = 0; i < Math.ceil(dataToSend.length / BATCH_SIZE); i++) {
+      //   await worldSend("addMap", [dataToSend.slice(i * BATCH_SIZE, Math.min((i + 1) * BATCH_SIZE, dataToSend.length)), { gasLimit: 30_000_000}])
+      // }
+      for( let i = 0; i < dataToSend.length; i++ ){
+      //for( let i = 0; i < 10; i++ ){
+        //console.log( 'setTile', i, dataToSend[i] );
+        await worldSend( "setTile", [i, dataToSend[i], { gasLimit: 30_000_000}])
       }
     }
-    if(!tiles && networkStatus?.state === 2 && !creatingMap) {
+    if( tiles.length < 1 && networkStatus?.state === 2 && !creatingMap) {
       setCreatingMap(true)
       setup()
     }
   }, [tiles, networkStatus, creatingMap] );
   
+  useEffect(() => {
+    let timeoutTimer = null;
+    if( hasPlacedSeed ){
+      timeoutTimer = setTimeout(function(){
+        setHasPlacedSeed( false );
+      }, 5500 );
+    }
+    return () => {
+      clearTimeout( timeoutTimer );
+    }
+  }, [hasPlacedSeed])
 
   return (
     <>
     <World width={gameW} height={gameH}> 
-      <Terrain tiles={tiles} width={gameW} height={gameH}></Terrain> 
+      <Terrain tiles={tiles.map( (componentId) => { return getComponentValueStrict( Gamefield, componentId ).value } ) } width={gameW} height={gameH}></Terrain> 
       <Others />
-      <Player />      
+      <Player dropped={hasPlacedSeed}/>      
     </World>
       <button
           type="button"
@@ -145,11 +176,14 @@ export const App = () => {
           }}
           onClick={async (event) => {            
             event.preventDefault();
-            const seededWorld = [...tiles.value];
+            const tilesValues = tiles.map( (componentId) => { return getComponentValueStrict( Gamefield, componentId ).value } );
+            const seededWorld = [...tilesValues];
             //const playerSeedPos = Math.floor( seededWorld?.length / 2 ?? 0 ) + 40;
             seededWorld[ playerPos.value ] = 99;
             console.log( playerPos.value, seededWorld );
-            await worldSend("addMap", [seededWorld, {gasLimit: 10_000_000 }]);               
+            //await worldSend("addMap", [seededWorld, {gasLimit: 10_000_000 }]);            
+            setHasPlacedSeed( playerPos.value );
+            await worldSend( "setTile", [playerPos.value, 99, { gasLimit: 30_000_000}])
           }}
       >
         PLACE SEED
