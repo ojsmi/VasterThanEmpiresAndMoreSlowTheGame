@@ -214,6 +214,24 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getPOS",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "x",
+        type: "uint32",
+      },
+      {
+        internalType: "uint32",
+        name: "y",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -380,6 +398,34 @@ const _abi = [
     name: "isStore",
     outputs: [],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "moveDown",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "moveLeft",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "moveRight",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "moveUp",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -652,6 +698,54 @@ const _abi = [
     ],
     name: "setRecord",
     outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "value",
+        type: "uint32",
+      },
+    ],
+    name: "translateXY",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "x",
+        type: "uint32",
+      },
+      {
+        internalType: "uint32",
+        name: "y",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "x",
+        type: "uint32",
+      },
+      {
+        internalType: "uint32",
+        name: "y",
+        type: "uint32",
+      },
+    ],
+    name: "translateXY",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "pos",
+        type: "uint32",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
