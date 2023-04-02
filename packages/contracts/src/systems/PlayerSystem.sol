@@ -31,9 +31,9 @@ contract PlayerSystem is System {
     uint32 y;
     (x, y) = getPOS();
     if (x < 80) {
-      uint32 newX = x + 1;
+      x = x + 1;
     }
-    uint32 pos = translateXY(newX, y);
+    uint32 pos = translateXY(x, y);
     PlayerPos.set(pos);
   }
 
@@ -42,9 +42,9 @@ contract PlayerSystem is System {
     uint32 y;
     (x, y) = getPOS();
     if (x > 0) {
-      uint32 newX = x - 1;
+      x = x - 1;
     }
-    uint32 pos = translateXY(newX, y);
+    uint32 pos = translateXY(x, y);
     PlayerPos.set(pos);
   }
 
@@ -53,20 +53,20 @@ contract PlayerSystem is System {
     uint32 y;
     (x, y) = getPOS();
     if (y > 0) {
-      uint32 newY = y - 1;
+      y = y - 1;
     }
-    uint32 pos = translateXY(x, newY);
+    uint32 pos = translateXY(x, y);
     PlayerPos.set(pos);
   }
 
-  function moveUp() public {
+  function moveDown() public {
     uint32 x;
     uint32 y;
     (x, y) = getPOS();
     if (y < 80) {
-      uint32 newY = y + 1;
+      uint32 y = y + 1;
     }
-    uint32 pos = translateXY(x, newY);
+    uint32 pos = translateXY(x, y);
     PlayerPos.set(pos);
   }
 
