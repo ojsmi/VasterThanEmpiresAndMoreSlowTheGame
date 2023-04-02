@@ -31,7 +31,7 @@ library PlayerPos {
 
   function getKeySchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](1);
-    _schema[0] = SchemaType.ADDRESS;
+    _schema[0] = SchemaType.BYTES32;
 
     return SchemaLib.encode(_schema);
   }
@@ -66,35 +66,35 @@ library PlayerPos {
   }
 
   /** Get value */
-  function get(address player) internal view returns (uint32 value) {
+  function get(bytes32 key) internal view returns (uint32 value) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32(bytes20((player)));
+    _primaryKeys[0] = bytes32((key));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
   /** Get value (using the specified store) */
-  function get(IStore _store, address player) internal view returns (uint32 value) {
+  function get(IStore _store, bytes32 key) internal view returns (uint32 value) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32(bytes20((player)));
+    _primaryKeys[0] = bytes32((key));
 
     bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
   /** Set value */
-  function set(address player, uint32 value) internal {
+  function set(bytes32 key, uint32 value) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32(bytes20((player)));
+    _primaryKeys[0] = bytes32((key));
 
     StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
   }
 
   /** Set value (using the specified store) */
-  function set(IStore _store, address player, uint32 value) internal {
+  function set(IStore _store, bytes32 key, uint32 value) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32(bytes20((player)));
+    _primaryKeys[0] = bytes32((key));
 
     _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
   }
@@ -105,17 +105,17 @@ library PlayerPos {
   }
 
   /* Delete all data for given keys */
-  function deleteRecord(address player) internal {
+  function deleteRecord(bytes32 key) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32(bytes20((player)));
+    _primaryKeys[0] = bytes32((key));
 
     StoreSwitch.deleteRecord(_tableId, _primaryKeys);
   }
 
   /* Delete all data for given keys (using the specified store) */
-  function deleteRecord(IStore _store, address player) internal {
+  function deleteRecord(IStore _store, bytes32 key) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32(bytes20((player)));
+    _primaryKeys[0] = bytes32((key));
 
     _store.deleteRecord(_tableId, _primaryKeys);
   }

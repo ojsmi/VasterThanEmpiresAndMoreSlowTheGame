@@ -23,9 +23,6 @@ export default mudConfig({
     },
     PlayerPos: {
       fileSelector: "playerpos",
-      primaryKeys: {
-        player: "address"
-      },
       schema: {
         value: "uint32"
       },

@@ -3,10 +3,11 @@ pragma solidity >=0.8.0;
 import { console } from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { PlayerPos } from "../tables/PlayerPos.sol";
+import { addressToEntity } from "../Utils.sol";
 
 contract PlayerSystem is System {
   function setPlayerPos(uint32 index) public {
-    PlayerPos.set(_msgSender(), index);
+    PlayerPos.set(addressToEntity(_msgSender()), index);
   }
 
   // function getPlayerPosition() public returns (uint32) {
@@ -29,7 +30,7 @@ contract PlayerSystem is System {
     uint32 pos;
     uint32 x;
     uint32 y;
-    pos = PlayerPos.get(_msgSender());
+    pos = PlayerPos.get(addressToEntity(_msgSender()));
     (x, y) = translatePos(pos);
     return (x, y);
   }
@@ -42,7 +43,7 @@ contract PlayerSystem is System {
       x = x + 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(_msgSender(), pos);
+    PlayerPos.set(addressToEntity(_msgSender()), pos);
   }
 
   function moveLeft() public {
@@ -53,7 +54,7 @@ contract PlayerSystem is System {
       x = x - 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(_msgSender(), pos);
+    PlayerPos.set(addressToEntity(_msgSender()), pos);
   }
 
   function moveUp() public {
@@ -64,7 +65,7 @@ contract PlayerSystem is System {
       y = y - 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(_msgSender(), pos);
+    PlayerPos.set(addressToEntity(_msgSender()), pos);
   }
 
   function moveDown() public {
@@ -75,7 +76,7 @@ contract PlayerSystem is System {
       y = y + 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(_msgSender(), pos);
+    PlayerPos.set(addressToEntity(_msgSender()), pos);
   }
 
   // function plant(uint32 what, index) {}

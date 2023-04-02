@@ -6,12 +6,11 @@ import { useEffect, useState } from "react";
 export const Player = () => {
     const {
         components: { PlayerPos },
-        singletonEntity,
+        playerEntity,
+        world,
         worldSend
     } = useMUD();
-
-    // const [pos, setPos] = useState({x: 0, y: 0 });
-    const playerPos = useComponentValue( PlayerPos, singletonEntity );
+    const playerPos = useComponentValue( PlayerPos, playerEntity );
     
 
     useEffect(() => {
@@ -36,13 +35,9 @@ export const Player = () => {
         }
     }, []);
 
-    // useEffect( () => {
-    //     console.log('<Player>, playerPos = ', playerPos );
-    //     if( playerPos ){            
-    //         setPos( helpers.indexToXY( playerPos.value, helpers.gameW ) );
-    //     }
-    // }, [ playerPos ] );
-
+    if(!playerPos) {
+        return <></>
+    }
     return (
         <div
             className={`vte-player`}
