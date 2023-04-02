@@ -93,6 +93,7 @@ export const App = () => {
   const [creatingMap, setCreatingMap] = useState(false);
   const [settingPlayer, setSettingPlayer] = useState(false);
   const [hasPlacedSeed, setHasPlacedSeed] = useState( false );
+  const [seedingPossible, setSeedingPossible] = useState(true);
   
   //const tiles = useComponentValue(Gamefield, singletonEntity);
   const tiles = useEntityQuery([Has(Gamefield)]);
@@ -166,6 +167,7 @@ export const App = () => {
       <Others />
       <Player dropped={hasPlacedSeed}/>      
     </World>
+    {(seedingPossible) ? 
       <button
           type="button"
           style={{
@@ -183,11 +185,14 @@ export const App = () => {
             console.log( playerPos.value, seededWorld );
             //await worldSend("addMap", [seededWorld, {gasLimit: 10_000_000 }]);            
             setHasPlacedSeed( playerPos.value );
+            setSeedingPossible( false );
             await worldSend( "setTile", [playerPos.value, 99, { gasLimit: 30_000_000}])
           }}
       >
         PLACE SEED
       </button>
+      : <></>
+    }
     </>
   );
 };
