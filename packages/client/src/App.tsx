@@ -30,6 +30,44 @@ const xyToIndex = function( x, y, width ){
   return (y * width) + x;
 }
 
+const updateWorld = ( tiles ) => {
+  console.log('updateWorld()');
+  const currentWorld = [...tiles.value];
+  const indicesOfEffect = [];
+  const valuesOfEffect = [];
+  for( let i = 0; i < currentWorld.length; i++ ){
+    if( currentWorld[i] === 99 ){
+      const tilePos = indexToXY( i, gameW );   
+      const xStart = (tilePos.x - 1 < 0) ? 0 : tilePos.x - 1;
+      const xEnd = (tilePos.x + 1 > gameW ) ? gameW : tilePos.x + 1;
+      const yStart = (tilePos.y - 1 < 0) ? 0 : tilePos.y - 1;
+      const yEnd = (tilePos.y + 1 > gameW ) ? gameH : tilePos.y + 1;
+
+      for( let x = xStart; x < xEnd + 1; x++ ){
+        for( let y = yStart; y < yEnd + 1; y++ ){
+          const index = xyToIndex( x, y, gameW );                    
+          if( index !== i ){
+            indicesOfEffect.push( index )
+            valuesOfEffect.push( currentWorld[index] );
+            //currentWorld[ index ] = 98;
+          }
+        }
+      }
+    }
+  }
+  if( valuesOfEffect.length > 0 ){
+    const lowestTileValue = valuesOfEffect.reduce( (a,b) => Math.min( a, b ) );
+    for( let i = 0; i < indicesOfEffect.length; i++ ){
+      const index = indicesOfEffect[i];
+      const value = currentWorld[index];
+      if( value === lowestTileValue ){
+        currentWorld[ index ] = 99;
+      }
+    }
+  }
+  return currentWorld;
+}
+
 
 export const App = () => {
   const {
@@ -46,7 +84,17 @@ export const App = () => {
   //const playerPos = Math.floor( tiles?.length / 2 ?? 0 );//useComponentValue( PlayerPos, singletonEntity );
   const playerPos = useComponentValue( PlayerPos, singletonEntity );
 
-
+  useEffect(() => {
+    if( !tiles ) return () => {}; 
+    const saveWorld = async () => {
+      const currentWorld = updateWorld( tiles );
+      console.log( 'update currentWorld on chain ' );
+      return worldContract.addMap( currentWorld, {gasLimit: 10_000_000, gasPrice: 0 });       
+    }
+    
+    saveWorld();    
+    return () => {}
+  }, [ playerPos ])
  
 
   useMemo(async () => {
@@ -83,58 +131,22 @@ export const App = () => {
     </World>
       <button
           type="button"
+          style={{
+            position: 'fixed',
+            top: '3.5rem',
+            left: '50%',
+            transform: 'translateX( -50% )'
+          }}
           onClick={async (event) => {            
             event.preventDefault();
             const seededWorld = [...tiles.value];
-            const playerSeedPos = Math.floor( seededWorld?.length / 2 ?? 0 ) + 40;
-            seededWorld[playerSeedPos] = 99;
-            console.log( playerSeedPos, seededWorld );
+            //const playerSeedPos = Math.floor( seededWorld?.length / 2 ?? 0 ) + 40;
+            seededWorld[ playerPos.value ] = 99;
+            console.log( playerPos.value, seededWorld );
             await worldContract.addMap( seededWorld, {gasLimit: 10_000_000, gasPrice: 0 });                
           }}
       >
         PLACE SEED
-      </button>
-      <button
-          type="button"
-          onClick={async (event) => {
-            event.preventDefault();
-            const currentWorld = [...tiles.value];
-            const indicesOfEffect = [];
-            const valuesOfEffect = [];
-            for( let i = 0; i < currentWorld.length; i++ ){
-              if( currentWorld[i] === 99 ){
-                const tilePos = indexToXY( i, gameW );   
-                const xStart = (tilePos.x - 1 < 0) ? 0 : tilePos.x - 1;
-                const xEnd = (tilePos.x + 1 > gameW ) ? gameW : tilePos.x + 1;
-                const yStart = (tilePos.y - 1 < 0) ? 0 : tilePos.y - 1;
-                const yEnd = (tilePos.y + 1 > gameW ) ? gameH : tilePos.y + 1;
-
-                for( let x = xStart; x < xEnd + 1; x++ ){
-                  for( let y = yStart; y < yEnd + 1; y++ ){
-                    const index = xyToIndex( x, y, gameW );                    
-                    if( index !== i ){
-                      indicesOfEffect.push( index )
-                      valuesOfEffect.push( currentWorld[index] );
-                      //currentWorld[ index ] = 98;
-                    }
-                  }
-                }
-              }
-            }
-            const lowestTileValue = valuesOfEffect.reduce( (a,b) => Math.min( a, b ) );
-            for( let i = 0; i < indicesOfEffect.length; i++ ){
-              const index = indicesOfEffect[i];
-              const value = currentWorld[index];
-              if( value === lowestTileValue ){
-                currentWorld[ index ] = 99;
-              }
-            }
-            
-            await worldContract.addMap( currentWorld, {gasLimit: 10_000_000, gasPrice: 0 }); 
-            console.log('UPDATE DONE');            
-          }}
-      >
-        RUN LOGIC
       </button>
     </>
   );

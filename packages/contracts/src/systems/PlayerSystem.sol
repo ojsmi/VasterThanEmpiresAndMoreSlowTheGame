@@ -9,7 +9,12 @@ contract PlayerSystem is System {
     PlayerPos.set(index);
   }
 
-  function translateXY(uint32 value) public returns (uint32 x, uint32 y) {
+  function getPlayerPosition() public returns (uint32) {
+    uint32 pos = PlayerPos.get();
+    return pos;
+  }
+
+  function translatePos(uint32 value) public returns (uint32 x, uint32 y) {
     uint32 x = value % 80;
     uint32 y = value / 80;
     return (x, y);
@@ -21,9 +26,12 @@ contract PlayerSystem is System {
   }
 
   function getPOS() public returns (uint32 x, uint32 y) {
+    uint32 pos;
     uint32 x;
     uint32 y;
-    (x, y) = translateXY(PlayerPos.get());
+    pos = PlayerPos.get();
+    (x, y) = translatePos(pos);
+    return (x, y);
   }
 
   function moveRight() public {

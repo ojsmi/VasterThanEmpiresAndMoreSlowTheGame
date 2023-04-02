@@ -15,7 +15,7 @@ export const Player = () => {
     
 
     useEffect(() => {
-        const moveListener = async ( e ) => {   
+        const moveListener = async ( e ) => {        
             //console.log('e.key = ', e.key );                 
             if( e.key === 'w' || e.key === 'ArrowUp' ){                
                 await worldSend( "moveUp", [{gasLimit: 1_000_000 }]);
@@ -28,7 +28,7 @@ export const Player = () => {
             }
             if( e.key ==='d' || e.key === 'ArrowRight' ){                
                 await worldSend( "moveRight", [{gasLimit: 1_000_000 }]);
-            }
+            }            
         }        
         window.addEventListener( 'keydown', moveListener );
         return () => {
