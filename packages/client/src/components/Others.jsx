@@ -42,9 +42,10 @@ export const Others = () => {
                         top: `${posXY.y}rem`,
                         //borderRadius: '50%',
                         //backgroundColor: 'rgba(0,255,0,0.5)'
-                        backgroundImage: `url("${otherCursor}")`
+                        backgroundImage: `url("${otherCursor}")`,
+                        backgroundSize: 'contain'
                     }}
-                >{otherPosition}</div>)
+                ></div>)
             })
     )
 }
