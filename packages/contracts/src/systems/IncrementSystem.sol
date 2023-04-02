@@ -32,9 +32,14 @@ contract IncrementSystem is System {
     Gamefield.set(newKey, value);
   }
 
-  // function setTilesArray(uint32[10] keys,uint32[10] values){
-
-  // }
+  function setTilesArray(uint32 startNumber, uint32[] memory values) public {
+    //uint32 start = 0;
+    for (uint256 i = 0; i < values.length; i++) {
+      bytes32 newKey = keccak256(abi.encodePacked(startNumber + i));
+      Gamefield.set(newKey, values[i]);
+    }
+    //Gamefield.push(data[i]);
+  }
 
   function getTile(uint32 key) public view returns (uint32) {
     bytes32 newKey = keccak256(abi.encodePacked(key));

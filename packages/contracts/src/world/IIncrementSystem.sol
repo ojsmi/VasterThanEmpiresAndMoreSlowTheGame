@@ -8,5 +8,7 @@ interface IIncrementSystem {
 
   function setTile(uint32 key, uint32 value) external;
 
+  function setTilesArray(uint32 startNumber, uint32[] memory values) external;
+
   function getTile(uint32 key) external view returns (uint32);
 }

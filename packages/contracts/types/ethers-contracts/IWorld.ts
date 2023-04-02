@@ -61,6 +61,7 @@ export interface IWorldInterface extends utils.Interface {
     "setRecord(bytes16,bytes16,bytes32[],bytes)": FunctionFragment;
     "setRecord(uint256,bytes32[],bytes)": FunctionFragment;
     "setTile(uint32,uint32)": FunctionFragment;
+    "setTilesArray(uint32,uint32[])": FunctionFragment;
     "translatePos(uint32)": FunctionFragment;
     "translateXY(uint32,uint32)": FunctionFragment;
   };
@@ -98,6 +99,7 @@ export interface IWorldInterface extends utils.Interface {
       | "setRecord(bytes16,bytes16,bytes32[],bytes)"
       | "setRecord(uint256,bytes32[],bytes)"
       | "setTile"
+      | "setTilesArray"
       | "translatePos"
       | "translateXY"
   ): FunctionFragment;
@@ -272,6 +274,10 @@ export interface IWorldInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setTilesArray",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "translatePos",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -371,6 +377,10 @@ export interface IWorldInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setTile", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setTilesArray",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "translatePos",
     data: BytesLike
@@ -644,6 +654,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setTilesArray(
+      startNumber: PromiseOrValue<BigNumberish>,
+      values: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -845,6 +861,12 @@ export interface IWorld extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setTilesArray(
+    startNumber: PromiseOrValue<BigNumberish>,
+    values: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   translatePos(
     value: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1033,6 +1055,12 @@ export interface IWorld extends BaseContract {
     setTile(
       key: PromiseOrValue<BigNumberish>,
       value: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setTilesArray(
+      startNumber: PromiseOrValue<BigNumberish>,
+      values: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1270,6 +1298,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setTilesArray(
+      startNumber: PromiseOrValue<BigNumberish>,
+      values: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1469,6 +1503,12 @@ export interface IWorld extends BaseContract {
     setTile(
       key: PromiseOrValue<BigNumberish>,
       value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTilesArray(
+      startNumber: PromiseOrValue<BigNumberish>,
+      values: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

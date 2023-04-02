@@ -34,6 +34,27 @@ contract CounterTest is MudV2Test {
     assertEq(val, 50);
   }
 
+  function setTilesArray() public {
+    //uint32[10] memory arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    uint32[] memory ret = new uint32[](50);
+    ret[6] = 8;
+    ret[30] = 10;
+    world.setTilesArray(0, ret);
+    uint32 val1 = world.getTile(6);
+    uint32 val2 = world.getTile(30);
+    assertEq(val1, 8);
+    assertEq(val2, 10);
+
+    uint32[] memory ret2 = new uint32[](50);
+    ret2[6] = 2;
+    ret2[30] = 8;
+    world.setTilesArray(50, ret);
+    uint32 val3 = world.getTile(56);
+    uint32 val4 = world.getTile(80);
+    assertEq(val3, 8);
+    assertEq(val4, 10);
+  }
+
   // function testMove() public {
   //   world.setPlayerPos(40);
   //   (uint32 posXv, uint32 posYv) = world.translatePos(40);
