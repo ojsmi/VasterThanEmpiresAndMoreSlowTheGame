@@ -39,7 +39,7 @@ export const Others = () => {
                         left: `${posXY.x + .33 }rem`,
                         top: `${posXY.y + .33 }rem`,
                         borderRadius: '50%',
-                        backgroundColor: 'blue'
+                        backgroundColor: 'rgba(0,255,0,0.5)'
                     }}
                 >{otherPosition}</div>)
             })

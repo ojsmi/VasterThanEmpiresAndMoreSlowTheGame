@@ -2,6 +2,8 @@ import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "../MUDContext";
 import helpers from "../helpers";
 import { useEffect, useState } from "react";
+import mycelium from "../../public/assets/img/mycelium-placed.gif"
+import cursor from "../../public/assets/img/cursor.gif"
 
 export const Player = ( {dropped} ) => {
     const {
@@ -47,7 +49,7 @@ export const Player = ( {dropped} ) => {
                 position: 'absolute',
                 left: `${helpers.indexToXY( playerPos.value, helpers.gameW ).x}rem`,
                 top: `${helpers.indexToXY( playerPos.value, helpers.gameW ).y}rem`,
-                backgroundImage: (dropped) ? 'url("public/assets/img/mycelium-placed.gif")' : 'url("public/assets/img/cursor.gif")',
+                backgroundImage: (dropped) ? `url("${mycelium}")` : `url("${cursor}")`,
                 backgroundSize: 'contain'
             }}
         ></div>
