@@ -126,21 +126,22 @@ export const App = () => {
     saveWorld();    
     return () => {}
   }, [ playerPos ])
-  const BATCH_SIZE = 100;
+  const BATCH_SIZE = 640;
 
   useEffect(() => {
     async function setup() {
       const dataToSend = worldData.slice(0,6400).map((item) => {
         return item.type;
       });
-      // for(let i = 0; i < Math.ceil(dataToSend.length / BATCH_SIZE); i++) {
-      //   await worldSend("addMap", [dataToSend.slice(i * BATCH_SIZE, Math.min((i + 1) * BATCH_SIZE, dataToSend.length)), { gasLimit: 30_000_000}])
-      // }
-      for( let i = 0; i < dataToSend.length; i++ ){
-      //for( let i = 0; i < 10; i++ ){
-        //console.log( 'setTile', i, dataToSend[i] );
-        await worldSend( "setTile", [i, dataToSend[i], { gasLimit: 30_000_000}])
+      for(let i = 0; i < Math.ceil(dataToSend.length / BATCH_SIZE); i++) {
+        console.log( 'setTilesArray', i * BATCH_SIZE, dataToSend.slice(i * BATCH_SIZE, Math.min((i + 1) * BATCH_SIZE ) ) );
+        await worldSend("setTilesArray", [ i * BATCH_SIZE, dataToSend.slice(i * BATCH_SIZE, Math.min((i + 1) * BATCH_SIZE, dataToSend.length)), { gasLimit: 30_000_000}])
       }
+      // for( let i = 0; i < dataToSend.length; i++ ){
+      // //for( let i = 0; i < 10; i++ ){
+      //   //console.log( 'setTile', i, dataToSend[i] );
+      //   await worldSend( "setTile", [i, dataToSend[i], { gasLimit: 30_000_000}])
+      // }
     }
     if( tiles.length < 1 && networkStatus?.state === 2 && !creatingMap) {
       setCreatingMap(true)
