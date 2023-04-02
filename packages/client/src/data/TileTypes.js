@@ -9,13 +9,13 @@ export const TileTypes = {
 }
 
 export const TileTypeToName = {};
-TileTypeToName[ TileTypes.DUST ] = 'sand';
-TileTypeToName[ TileTypes.SAND ] = 'mud';
+TileTypeToName[ TileTypes.SAND ] = 'sand';
+TileTypeToName[ TileTypes.MUD ] = 'mud';
 TileTypeToName[ TileTypes.STONE ] = 'stone';
-TileTypeToName[ TileTypes.MIST ] = 'swamp';
-TileTypeToName[ TileTypes.WATER ] = 'ocean';
+TileTypeToName[ TileTypes.SWAMP ] = 'swamp';
+TileTypeToName[ TileTypes.OCEAN ] = 'ocean';
 TileTypeToName[ TileTypes.ICE ] = 'ice';
-TileTypeToName[ TileTypes.PLANT ] = 'pando';
+TileTypeToName[ TileTypes.PANDO ] = 'pando';
 
 export const CharToTileType = {};
 CharToTileType['-'] = TileTypes.SAND;

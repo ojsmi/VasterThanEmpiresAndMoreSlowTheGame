@@ -20,32 +20,39 @@ export const Player = () => {
             // console.log( playerPos );
             // const pos = indexToXY( playerPos?.value ?? 0, gameW );    
             console.log('pos', pos );
+            let makeTransaction = false;
             const p = {
                 x: pos.x,
                 y: pos.y
             }
             console.log( 'p', p );
             if( e.key === 'w' ){
-            p.y -= 1;
+                makeTransaction = true;
+                p.y -= 1;
             }
             if( e.key ==='a' ){
-            p.x -= 1;
+                makeTransaction = true;
+                p.x -= 1;
             }
             if( e.key ==='s' ){
-            p.y += 1;
+                makeTransaction = true;
+                p.y += 1;
             }
             if( e.key ==='d' ){
-            p.x += 1;
+                makeTransaction = true;
+                p.x += 1;
             }
-            p.x = Math.max( 0, p.x );
-            p.x = Math.min( helpers.gameW, p.x );
-            p.y = Math.max( 0, p.y );
-            p.y = Math.min( helpers.gameH, p.y );
-            const resultIndex = helpers.xyToIndex( p.x, p.y, helpers.gameW );
-            console.log( 'resultIndex:', resultIndex );
-            //await worldContract.setPlayerPos( resultIndex, {gasLimit: 10_000_000, gasPrice: 0 });
-            await worldSend( "setPlayerPos", [ resultIndex, {gasLimit: 1_000_000 }]);
-            console.log('player moved');
+            if( makeTransaction ){
+                p.x = Math.max( 0, p.x );
+                p.x = Math.min( helpers.gameW, p.x );
+                p.y = Math.max( 0, p.y );
+                p.y = Math.min( helpers.gameH, p.y );
+                const resultIndex = helpers.xyToIndex( p.x, p.y, helpers.gameW );
+                console.log( 'resultIndex:', resultIndex );
+                //await worldContract.setPlayerPos( resultIndex, {gasLimit: 10_000_000, gasPrice: 0 });
+                await worldSend( "setPlayerPos", [ resultIndex, {gasLimit: 1_000_000 }]);
+                console.log('player moved');
+            }
         }        
         window.addEventListener('keydown', moveListener)
         return () => {
@@ -68,8 +75,10 @@ export const Player = () => {
                 height: `1rem`,
                 position: 'absolute',
                 left: `${pos.x}rem`,
-                top: `${pos.y}rem`
+                top: `${pos.y}rem`,
+                borderRadius: '50%',
+                backgroundColor: 'lime'
             }}
-        >P</div>
+        ></div>
     )
 }
