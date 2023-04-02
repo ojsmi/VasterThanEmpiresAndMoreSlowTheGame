@@ -15,50 +15,22 @@ export const Player = () => {
     
 
     useEffect(() => {
-        const moveListener = async ( e ) => {
-            console.log( 'keydown', e );
-            // console.log( playerPos );
-            // const pos = indexToXY( playerPos?.value ?? 0, gameW );    
-            //console.log('pos', pos );
-            // let makeTransaction = false;
-            // const p = {
-            //     x: pos.x,
-            //     y: pos.y
-            // }
-            // console.log( 'p', p );
-            if( e.key === 'w' ){
-                //makeTransaction = true;
-                //p.y -= 1;
+        const moveListener = async ( e ) => {   
+            //console.log('e.key = ', e.key );                 
+            if( e.key === 'w' || e.key === 'ArrowUp' ){                
                 await worldSend( "moveUp", [{gasLimit: 1_000_000 }]);
             }
-            if( e.key ==='a' ){
-                // makeTransaction = true;
-                // p.x -= 1;
+            if( e.key ==='a' || e.key === 'ArrowLeft'  ){                
                 await worldSend( "moveLeft", [{gasLimit: 1_000_000 }]);
             }
-            if( e.key ==='s' ){
-                // makeTransaction = true;
-                // p.y += 1;
+            if( e.key ==='s' || e.key === 'ArrowDown'  ){                
                 await worldSend( "moveDown", [{gasLimit: 1_000_000 }]);
             }
-            if( e.key ==='d' ){
-                // makeTransaction = true;
-                // p.x += 1;
+            if( e.key ==='d' || e.key === 'ArrowRight' ){                
                 await worldSend( "moveRight", [{gasLimit: 1_000_000 }]);
             }
-            // if( makeTransaction ){
-            //     p.x = Math.max( 0, p.x );
-            //     p.x = Math.min( helpers.gameW, p.x );
-            //     p.y = Math.max( 0, p.y );
-            //     p.y = Math.min( helpers.gameH, p.y );
-            //     const resultIndex = helpers.xyToIndex( p.x, p.y, helpers.gameW );
-            //     console.log( 'resultIndex:', resultIndex );
-            //     //await worldContract.setPlayerPos( resultIndex, {gasLimit: 10_000_000, gasPrice: 0 });
-            //     await worldSend( "setPlayerPos", [ resultIndex, {gasLimit: 1_000_000 }]);
-            //     console.log('player moved');
-            // }
         }        
-        window.addEventListener('keydown', moveListener)
+        window.addEventListener( 'keydown', moveListener );
         return () => {
             window.removeEventListener( 'keydown', moveListener );
         }
@@ -66,10 +38,10 @@ export const Player = () => {
 
     useEffect( () => {
         console.log('<Player>, playerPos = ', playerPos );
-        if( playerPos ){
+        if( playerPos ){            
             setPos( helpers.indexToXY( playerPos.value, helpers.gameW ) );
         }
-    }, [playerPos] );
+    }, [ playerPos ] );
 
     return (
         <div

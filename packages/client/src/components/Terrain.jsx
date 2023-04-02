@@ -3,7 +3,7 @@ import { Tile } from "./Tile";
 export const Terrain = ({tiles, width, height}) => {
     return (
         <div
-            className={`vte-world`}
+            className={`vte-terrain`}
             style={{
                 width: `${width}rem`,
                 height: `${height}rem`,

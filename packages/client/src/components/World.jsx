@@ -3,9 +3,7 @@ export const World = ({children, width, height }) => {
         className={`vte-world`}
         style={{
             width: `${width}rem`,
-            height: `${height}rem`,
-            display: 'flex',
-            flexWrap: 'wrap'
+            height: `${height}rem`
         }}
     >
         {children}

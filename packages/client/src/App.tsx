@@ -6,8 +6,10 @@ import { getComponentValue, Has } from "@latticexyz/recs";
 import { Terrain } from "./components/Terrain";
 import { World } from "./components/World";
 import { Player } from './components/Player';
+import { Others } from './components/Others'; 
 
 import { worldData } from './data/worldData';
+import helpers from './helpers'; 
 
 
 
@@ -48,18 +50,21 @@ export const App = () => {
  
 
   useMemo(async () => {
-    console.log( '----> SEND ')
+    console.log( '----> SEND INITIAL MAP')
     const correctNonce = await worldContract.signer.getTransactionCount()
     nunonce ??= correctNonce;
     
     const dataToSend = worldData.slice(0,6400).map((item) => {
       return item.type;
-    });
-    worldContract.addMap( dataToSend, {gasLimit: 10_000_000, gasPrice: 0, nonce: nunonce });
+    });    
+    await worldContract.addMap( dataToSend, {gasLimit: 10_000_000, gasPrice: 0, nonce: nunonce });
     // worldSend( "addMap", [[18], { gasLimit: 1_000_000 }]);
     nunonce++;
 
-   // worldContract.setPlayerPos( Math.floor( dataToSend.length / 2 ?? 0 ), {gasLimit: 10_000_000, gasPrice: 0 });
+    const playerStart = Math.floor( (dataToSend.length / 2 ?? 0) + helpers.gameW / 2 );
+    console.log( '----> SEND PLAYER START');
+    console.log('playerStart', playerStart);
+    await worldSend( "setPlayerPos", [ playerStart, {gasLimit: 10_000_000, gasPrice: 0 }]);
   }, [] );
 
   
@@ -68,12 +73,13 @@ export const App = () => {
     <>
     <World width={gameW} height={gameH}> 
       <Terrain tiles={tiles} width={gameW} height={gameH}></Terrain> 
+      <Others />
       <Player 
         pos={ indexToXY( playerPos, gameW ) }
         // onMove={ (x,y) => {
         //   xyToIndex( x, y );
         // }}
-      />
+      />      
     </World>
       <button
           type="button"
