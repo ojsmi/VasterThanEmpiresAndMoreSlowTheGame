@@ -5,6 +5,8 @@ import { useMUD } from "../MUDContext";
 import helpers from "../helpers";
 import { useEffect, useState } from "react";
 
+import otherCursor from "../../public/assets/img/other-player.gif"
+
 const Other = () => {
 
 }
@@ -33,13 +35,14 @@ export const Others = () => {
                 return (<div
                     className={`vte-player`}
                     style={{
-                        width: `.33rem`,
-                        height: `.33rem`,
+                        width: `1rem`,
+                        height: `1rem`,
                         position: 'absolute',
-                        left: `${posXY.x + .33 }rem`,
-                        top: `${posXY.y + .33 }rem`,
-                        borderRadius: '50%',
-                        backgroundColor: 'rgba(0,255,0,0.5)'
+                        left: `${posXY.x}rem`,
+                        top: `${posXY.y}rem`,
+                        //borderRadius: '50%',
+                        //backgroundColor: 'rgba(0,255,0,0.5)'
+                        backgroundImage: `url("${otherCursor}")`
                     }}
                 >{otherPosition}</div>)
             })

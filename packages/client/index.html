@@ -20,7 +20,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        transition: opacity 15s linear;   
+        transition: opacity 5s linear;   
         z-index: 99;     
         object-fit: contain;
         background-color: black;
@@ -31,20 +31,20 @@
     </style>
   </head>
   <body>
-    <!-- <img class="screen" src="/public/assets/screen2.jpg" alt="">
-    <img class="screen" src="/public/assets/screen1.jpg" alt="">     -->
+    <!-- <img class="screen" src="/public/assets/screen2.jpg" alt=""> -->
+    <!-- <img class="screen" src="/public/assets/screen1.jpg" alt="">     -->
     <div id="react-root"></div>
     <script type="module" src="/src/index.tsx"></script>
-    <script>
+    <!-- <script>
       const $screens = document.querySelectorAll('.screen');
       $screens.forEach( $screen => {
         $screen.addEventListener('click', () => {
           $screen.classList.add('clicked');
           setTimeout(function(){
             document.body.removeChild( $screen );
-          }, 15000 );
+          },  );
         });
       });
-    </script>
+    </script> -->
   </body>
 </html>
