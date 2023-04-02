@@ -5,7 +5,9 @@ export const TileTypes = {
     SWAMP: 3,
     OCEAN: 4,
     ICE: 5,
-    PANDO: 6
+    PANDO: 6,
+    MYCELIUM: 99,
+    SLIME: 98
 }
 
 export const TileTypeToName = {};
@@ -16,6 +18,8 @@ TileTypeToName[ TileTypes.SWAMP ] = 'swamp';
 TileTypeToName[ TileTypes.OCEAN ] = 'ocean';
 TileTypeToName[ TileTypes.ICE ] = 'ice';
 TileTypeToName[ TileTypes.PANDO ] = 'pando';
+TileTypeToName[ TileTypes.MYCELIUM ] = 'mycelium';
+TileTypeToName[ TileTypes.SLIME ] = 'slime';
 
 export const CharToTileType = {};
 CharToTileType['-'] = TileTypes.SAND;

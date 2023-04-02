@@ -3,7 +3,7 @@ import { useMUD } from "../MUDContext";
 import helpers from "../helpers";
 import { useEffect, useState } from "react";
 
-export const Player = () => {
+export const Player = ( {dropped} ) => {
     const {
         components: { PlayerPos },
         playerEntity,
@@ -47,8 +47,8 @@ export const Player = () => {
                 position: 'absolute',
                 left: `${helpers.indexToXY( playerPos.value, helpers.gameW ).x}rem`,
                 top: `${helpers.indexToXY( playerPos.value, helpers.gameW ).y}rem`,
-                borderRadius: '50%',
-                backgroundColor: 'lime'
+                backgroundImage: (dropped) ? 'url("public/assets/img/mycelium-placed.gif")' : 'url("public/assets/img/cursor.gif")',
+                backgroundSize: 'contain'
             }}
         ></div>
     )

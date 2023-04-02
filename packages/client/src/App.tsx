@@ -85,6 +85,7 @@ export const App = () => {
 
   const [creatingMap, setCreatingMap] = useState(false);
   const [settingPlayer, setSettingPlayer] = useState(false);
+  const [hasPlacedSeed, setHasPlacedSeed] = useState( false );
   
   const tiles = useComponentValue(Gamefield, singletonEntity);
   const playerPos = useComponentValue( PlayerPos, playerEntity);
@@ -127,13 +128,24 @@ export const App = () => {
     }
   }, [tiles, networkStatus, creatingMap] );
   
+  useEffect(() => {
+    let timeoutTimer = null;
+    if( hasPlacedSeed ){
+      timeoutTimer = setTimeout(function(){
+        setHasPlacedSeed( false );
+      }, 5500 );
+    }
+    return () => {
+      clearTimeout( timeoutTimer );
+    }
+  }, [hasPlacedSeed])
 
   return (
     <>
     <World width={gameW} height={gameH}> 
       <Terrain tiles={tiles} width={gameW} height={gameH}></Terrain> 
       <Others />
-      <Player />      
+      <Player dropped={hasPlacedSeed}/>      
     </World>
       <button
           type="button"
@@ -149,7 +161,8 @@ export const App = () => {
             //const playerSeedPos = Math.floor( seededWorld?.length / 2 ?? 0 ) + 40;
             seededWorld[ playerPos.value ] = 99;
             console.log( playerPos.value, seededWorld );
-            await worldSend("addMap", [seededWorld, {gasLimit: 10_000_000 }]);               
+            await worldSend("addMap", [seededWorld, {gasLimit: 10_000_000 }]);
+            setHasPlacedSeed( playerPos.value );
           }}
       >
         PLACE SEED
