@@ -13,7 +13,6 @@ export default mudConfig({
       schema: {
         value: "uint32",
       },
-      storeArgument: true,
     },
     Gamefield: {
       fileSelector: "gamefield",
@@ -21,15 +20,15 @@ export default mudConfig({
       schema: {
         value: "uint8[]"
       },
-      storeArgument: true,
     },
     PlayerPos: {
       fileSelector: "playerpos",
-      primaryKeys: {},
+      primaryKeys: {
+        player: "address"
+      },
       schema: {
         value: "uint32"
       },
-      storeArgument: true,
     },    
   },
   modules: [

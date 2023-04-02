@@ -10,7 +10,7 @@ export const Player = () => {
         worldSend
     } = useMUD();
 
-    const [pos, setPos] = useState({x: 0, y: 0 });
+    // const [pos, setPos] = useState({x: 0, y: 0 });
     const playerPos = useComponentValue( PlayerPos, singletonEntity );
     
 
@@ -36,12 +36,12 @@ export const Player = () => {
         }
     }, []);
 
-    useEffect( () => {
-        console.log('<Player>, playerPos = ', playerPos );
-        if( playerPos ){            
-            setPos( helpers.indexToXY( playerPos.value, helpers.gameW ) );
-        }
-    }, [ playerPos ] );
+    // useEffect( () => {
+    //     console.log('<Player>, playerPos = ', playerPos );
+    //     if( playerPos ){            
+    //         setPos( helpers.indexToXY( playerPos.value, helpers.gameW ) );
+    //     }
+    // }, [ playerPos ] );
 
     return (
         <div
@@ -50,8 +50,8 @@ export const Player = () => {
                 width: `1rem`,
                 height: `1rem`,
                 position: 'absolute',
-                left: `${pos.x}rem`,
-                top: `${pos.y}rem`,
+                left: `${helpers.indexToXY( playerPos.value, helpers.gameW ).x}rem`,
+                top: `${helpers.indexToXY( playerPos.value, helpers.gameW ).y}rem`,
                 borderRadius: '50%',
                 backgroundColor: 'lime'
             }}

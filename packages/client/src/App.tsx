@@ -12,10 +12,6 @@ import { worldData } from './data/worldData';
 import helpers from './helpers'; 
 
 
-
-let nunonce = undefined;
-
-
 const gameW = 80;
 const gameH = 80;
 
@@ -72,6 +68,7 @@ const updateWorld = ( tiles ) => {
 export const App = () => {
   const {
     components: { Gamefield, PlayerPos },
+    playerEntity,
     singletonEntity,
     worldSend,
     worldContract
@@ -82,7 +79,7 @@ export const App = () => {
   //const tiles = worldData;
   const tiles = useComponentValue( Gamefield, singletonEntity);
   //const playerPos = Math.floor( tiles?.length / 2 ?? 0 );//useComponentValue( PlayerPos, singletonEntity );
-  const playerPos = useComponentValue( PlayerPos, singletonEntity );
+  const playerPos = useComponentValue( PlayerPos, playerEntity );
 
   useEffect(() => {
     if( !tiles ) return () => {}; 
@@ -98,21 +95,20 @@ export const App = () => {
  
 
   useMemo(async () => {
-    console.log( '----> SEND INITIAL MAP')
-    const correctNonce = await worldContract.signer.getTransactionCount()
-    nunonce ??= correctNonce;
-    
-    const dataToSend = worldData.slice(0,6400).map((item) => {
-      return item.type;
-    });    
-    await worldContract.addMap( dataToSend, {gasLimit: 10_000_000, gasPrice: 0, nonce: nunonce });
-    // worldSend( "addMap", [[18], { gasLimit: 1_000_000 }]);
-    nunonce++;
-
-    const playerStart = Math.floor( (dataToSend.length / 2 ?? 0) + helpers.gameW / 2 );
-    console.log( '----> SEND PLAYER START');
-    console.log('playerStart', playerStart);
-    await worldSend( "setPlayerPos", [ playerStart, {gasLimit: 10_000_000, gasPrice: 0 }]);
+    if(!tiles) {
+      console.log( '----> SEND INITIAL MAP')
+      const nonce = await worldContract.signer.getTransactionCount()
+      const dataToSend = worldData.slice(0,6400).map((item) => {
+        return item.type;
+      });    
+      const tx = await worldContract.addMap( dataToSend, {gasLimit: 10_000_000, gasPrice: 0, nonce });
+      await tx.wait();  
+      const playerStart = Math.floor( (dataToSend.length / 2 ?? 0) + helpers.gameW / 2 );
+      console.log( '----> SEND PLAYER START');
+      console.log('playerStart', playerStart);
+      const newNonce = await worldContract.signer.getTransactionCount()
+      await worldSend( "setPlayerPos", [ playerStart, {gasLimit: 10_000_000, gasPrice: 0, nonce: newNonce }]);
+    }
   }, [] );
 
   

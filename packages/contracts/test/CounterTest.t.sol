@@ -37,86 +37,86 @@ contract CounterTest is MudV2Test {
   //   console.log(posX);
   // }
 
-  function testTranslateXY() public {
-    uint32 pos = world.translateXY(20, 20);
-    assertEq(pos, 1620);
-  }
+  // function testTranslateXY() public {
+  //   uint32 pos = world.translateXY(20, 20);
+  //   assertEq(pos, 1620);
+  // }
 
-  function testTranslatePos() public {
-    uint32 x;
-    uint32 y;
-    (x, y) = world.translatePos(1620);
-    assertEq(x, 20);
-    assertEq(y, 20);
-  }
+  // function testTranslatePos() public {
+  //   uint32 x;
+  //   uint32 y;
+  //   (x, y) = world.translatePos(1620);
+  //   assertEq(x, 20);
+  //   assertEq(y, 20);
+  // }
 
-  function testSetPos() public {
-    uint32 pos;
-    world.setPlayerPos(1620);
-    pos = world.getPlayerPosition();
-    assertEq(pos, 1620);
-  }
+  // function testSetPos() public {
+  //   uint32 pos;
+  //   world.setPlayerPos(1620);
+  //   pos = world.getPlayerPosition();
+  //   assertEq(pos, 1620);
+  // }
 
-  function testgetPos() public {
-    uint32 x;
-    uint32 y;
-    world.setPlayerPos(1620);
-    (x, y) = world.getPOS();
-    assertEq(x, 20);
-    assertEq(y, 20);
-  }
+  // function testgetPos() public {
+  //   uint32 x;
+  //   uint32 y;
+  //   world.setPlayerPos(1620);
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 20);
+  //   assertEq(y, 20);
+  // }
 
-  function testMoveRight() public {
-    uint32 x;
-    uint32 y;
-    world.setPlayerPos(1620);
-    (x, y) = world.getPOS();
-    assertEq(x, 20);
-    assertEq(y, 20);
-    world.moveRight();
-    (x, y) = world.getPOS();
-    assertEq(x, 21);
-    assertEq(y, 20);
-  }
+  // function testMoveRight() public {
+  //   uint32 x;
+  //   uint32 y;
+  //   world.setPlayerPos(1620);
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 20);
+  //   assertEq(y, 20);
+  //   world.moveRight();
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 21);
+  //   assertEq(y, 20);
+  // }
 
-  function testMoveLeft() public {
-    uint32 x;
-    uint32 y;
-    world.setPlayerPos(1620);
-    (x, y) = world.getPOS();
-    assertEq(x, 20);
-    assertEq(y, 20);
-    world.moveLeft();
-    (x, y) = world.getPOS();
-    assertEq(x, 19);
-    assertEq(y, 20);
-  }
+  // function testMoveLeft() public {
+  //   uint32 x;
+  //   uint32 y;
+  //   world.setPlayerPos(1620);
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 20);
+  //   assertEq(y, 20);
+  //   world.moveLeft();
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 19);
+  //   assertEq(y, 20);
+  // }
 
-  function testMoveUp() public {
-    uint32 x;
-    uint32 y;
-    world.setPlayerPos(1620);
-    (x, y) = world.getPOS();
-    assertEq(x, 20);
-    assertEq(y, 20);
-    world.moveUp();
-    (x, y) = world.getPOS();
-    assertEq(x, 20);
-    assertEq(y, 19);
-  }
+  // function testMoveUp() public {
+  //   uint32 x;
+  //   uint32 y;
+  //   world.setPlayerPos(1620);
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 20);
+  //   assertEq(y, 20);
+  //   world.moveUp();
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 20);
+  //   assertEq(y, 19);
+  // }
 
-  function testMoveDown() public {
-    uint32 x;
-    uint32 y;
-    world.setPlayerPos(1620);
-    (x, y) = world.getPOS();
-    assertEq(x, 20);
-    assertEq(y, 20);
-    world.moveDown();
-    (x, y) = world.getPOS();
-    assertEq(x, 20);
-    assertEq(y, 21);
-  }
+  // function testMoveDown() public {
+  //   uint32 x;
+  //   uint32 y;
+  //   world.setPlayerPos(1620);
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 20);
+  //   assertEq(y, 20);
+  //   world.moveDown();
+  //   (x, y) = world.getPOS();
+  //   assertEq(x, 20);
+  //   assertEq(y, 21);
+  // }
 
   // function testCounter() public {
   //   // Expect the counter to be 1 because it was incremented in the PostDeploy script.

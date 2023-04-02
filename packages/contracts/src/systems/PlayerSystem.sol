@@ -6,13 +6,13 @@ import { PlayerPos } from "../tables/PlayerPos.sol";
 
 contract PlayerSystem is System {
   function setPlayerPos(uint32 index) public {
-    PlayerPos.set(index);
+    PlayerPos.set(_msgSender(), index);
   }
 
-  function getPlayerPosition() public returns (uint32) {
-    uint32 pos = PlayerPos.get();
-    return pos;
-  }
+  // function getPlayerPosition() public returns (uint32) {
+  //   uint32 pos = PlayerPos.get();
+  //   return pos;
+  // }
 
   function translatePos(uint32 value) public returns (uint32 x, uint32 y) {
     uint32 x = value % 80;
@@ -25,11 +25,11 @@ contract PlayerSystem is System {
     return pos;
   }
 
-  function getPOS() public returns (uint32 x, uint32 y) {
+  function getPOS() internal returns (uint32 x, uint32 y) {
     uint32 pos;
     uint32 x;
     uint32 y;
-    pos = PlayerPos.get();
+    pos = PlayerPos.get(_msgSender());
     (x, y) = translatePos(pos);
     return (x, y);
   }
@@ -42,7 +42,7 @@ contract PlayerSystem is System {
       x = x + 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(pos);
+    PlayerPos.set(_msgSender(), pos);
   }
 
   function moveLeft() public {
@@ -53,7 +53,7 @@ contract PlayerSystem is System {
       x = x - 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(pos);
+    PlayerPos.set(_msgSender(), pos);
   }
 
   function moveUp() public {
@@ -64,7 +64,7 @@ contract PlayerSystem is System {
       y = y - 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(pos);
+    PlayerPos.set(_msgSender(), pos);
   }
 
   function moveDown() public {
@@ -75,7 +75,7 @@ contract PlayerSystem is System {
       y = y + 1;
     }
     uint32 pos = translateXY(x, y);
-    PlayerPos.set(pos);
+    PlayerPos.set(_msgSender(), pos);
   }
 
   // function plant(uint32 what, index) {}
