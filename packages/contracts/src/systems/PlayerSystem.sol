@@ -64,7 +64,7 @@ contract PlayerSystem is System {
     uint32 y;
     (x, y) = getPOS();
     if (y < 80) {
-      uint32 y = y + 1;
+      y = y + 1;
     }
     uint32 pos = translateXY(x, y);
     PlayerPos.set(pos);
