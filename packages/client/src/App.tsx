@@ -91,9 +91,9 @@ export const App = () => {
   const networkStatus = useComponentValue(LoadingState, singletonEntity)
 
   useEffect(() => {
-    if(!playerPos && networkStatus?.state === 2 && tiles && !settingPlayer) {
+    if(!playerPos && networkStatus?.state === 2 && tiles?.value?.length && tiles.value.length >= dataToSend.length && !settingPlayer) {
       setSettingPlayer(true)
-      worldSend( "setPlayerPos", [ playerStart, {gasLimit: 10_000_000 }]);
+      worldSend( "setPlayerPos", [ playerStart, {gasLimit: 1_000_000 }]);
     }
   }, [playerPos, networkStatus, tiles, settingPlayer])
 
@@ -110,14 +110,16 @@ export const App = () => {
   //   saveWorld();    
   //   return () => {}
   // }, [ playerPos ])
- 
+  const BATCH_SIZE = 100;
 
   useEffect(() => {
     async function setup() {
       const dataToSend = worldData.slice(0,6400).map((item) => {
         return item.type;
-      });    
-      await worldSend("addMap", [dataToSend, { gasLimit: 10_000_000}])
+      });
+      for(let i = 0; i < Math.ceil(dataToSend.length / BATCH_SIZE); i++) {
+        await worldSend("addMap", [dataToSend.slice(i * BATCH_SIZE, Math.min((i + 1) * BATCH_SIZE, dataToSend.length)), { gasLimit: 30_000_000}])
+      }
     }
     if(!tiles && networkStatus?.state === 2 && !creatingMap) {
       setCreatingMap(true)
