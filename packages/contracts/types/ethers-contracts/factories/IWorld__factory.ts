@@ -232,6 +232,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getPlayerPosition",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -709,7 +722,7 @@ const _abi = [
         type: "uint32",
       },
     ],
-    name: "translateXY",
+    name: "translatePos",
     outputs: [
       {
         internalType: "uint32",

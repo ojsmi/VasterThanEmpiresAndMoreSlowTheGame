@@ -8,6 +8,7 @@ import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/ge
 import { IWorld } from "../src/world/IWorld.sol";
 import { CounterTable, CounterTableTableId } from "../src/tables/CounterTable.sol";
 import { Gamefield } from "../src/tables/Gamefield.sol";
+import { PlayerSystem } from "../src/systems/PlayerSystem.sol";
 
 contract CounterTest is MudV2Test {
   IWorld world;
@@ -25,6 +26,96 @@ contract CounterTest is MudV2Test {
       codeSize := extcodesize(addr)
     }
     assertTrue(codeSize > 0);
+  }
+
+  // function testMove() public {
+  //   world.setPlayerPos(40);
+  //   (uint32 posXv, uint32 posYv) = world.translatePos(40);
+  //   console.log(posXv);
+  //   console.log(posYv);
+  //   (uint32 posX, uint32 posY) = world.getPOS();
+  //   console.log(posX);
+  // }
+
+  function testTranslateXY() public {
+    uint32 pos = world.translateXY(20, 20);
+    assertEq(pos, 1620);
+  }
+
+  function testTranslatePos() public {
+    uint32 x;
+    uint32 y;
+    (x, y) = world.translatePos(1620);
+    assertEq(x, 20);
+    assertEq(y, 20);
+  }
+
+  function testSetPos() public {
+    uint32 pos;
+    world.setPlayerPos(1620);
+    pos = world.getPlayerPosition();
+    assertEq(pos, 1620);
+  }
+
+  function testgetPos() public {
+    uint32 x;
+    uint32 y;
+    world.setPlayerPos(1620);
+    (x, y) = world.getPOS();
+    assertEq(x, 20);
+    assertEq(y, 20);
+  }
+
+  function testMoveRight() public {
+    uint32 x;
+    uint32 y;
+    world.setPlayerPos(1620);
+    (x, y) = world.getPOS();
+    assertEq(x, 20);
+    assertEq(y, 20);
+    world.moveRight();
+    (x, y) = world.getPOS();
+    assertEq(x, 21);
+    assertEq(y, 20);
+  }
+
+  function testMoveLeft() public {
+    uint32 x;
+    uint32 y;
+    world.setPlayerPos(1620);
+    (x, y) = world.getPOS();
+    assertEq(x, 20);
+    assertEq(y, 20);
+    world.moveLeft();
+    (x, y) = world.getPOS();
+    assertEq(x, 19);
+    assertEq(y, 20);
+  }
+
+  function testMoveUp() public {
+    uint32 x;
+    uint32 y;
+    world.setPlayerPos(1620);
+    (x, y) = world.getPOS();
+    assertEq(x, 20);
+    assertEq(y, 20);
+    world.moveUp();
+    (x, y) = world.getPOS();
+    assertEq(x, 20);
+    assertEq(y, 19);
+  }
+
+  function testMoveDown() public {
+    uint32 x;
+    uint32 y;
+    world.setPlayerPos(1620);
+    (x, y) = world.getPOS();
+    assertEq(x, 20);
+    assertEq(y, 20);
+    world.moveDown();
+    (x, y) = world.getPOS();
+    assertEq(x, 20);
+    assertEq(y, 21);
   }
 
   // function testCounter() public {

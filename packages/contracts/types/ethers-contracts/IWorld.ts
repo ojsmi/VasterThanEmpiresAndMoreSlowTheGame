@@ -36,6 +36,7 @@ export interface IWorldInterface extends utils.Interface {
     "getField(uint256,bytes32[],uint8)": FunctionFragment;
     "getKeySchema(uint256)": FunctionFragment;
     "getPOS()": FunctionFragment;
+    "getPlayerPosition()": FunctionFragment;
     "getRecord(uint256,bytes32[],bytes32)": FunctionFragment;
     "getRecord(uint256,bytes32[])": FunctionFragment;
     "getSchema(uint256)": FunctionFragment;
@@ -60,7 +61,7 @@ export interface IWorldInterface extends utils.Interface {
     "setPlayerPos(uint32)": FunctionFragment;
     "setRecord(bytes16,bytes16,bytes32[],bytes)": FunctionFragment;
     "setRecord(uint256,bytes32[],bytes)": FunctionFragment;
-    "translateXY(uint32)": FunctionFragment;
+    "translatePos(uint32)": FunctionFragment;
     "translateXY(uint32,uint32)": FunctionFragment;
   };
 
@@ -73,6 +74,7 @@ export interface IWorldInterface extends utils.Interface {
       | "getField"
       | "getKeySchema"
       | "getPOS"
+      | "getPlayerPosition"
       | "getRecord(uint256,bytes32[],bytes32)"
       | "getRecord(uint256,bytes32[])"
       | "getSchema"
@@ -97,8 +99,8 @@ export interface IWorldInterface extends utils.Interface {
       | "setPlayerPos"
       | "setRecord(bytes16,bytes16,bytes32[],bytes)"
       | "setRecord(uint256,bytes32[],bytes)"
-      | "translateXY(uint32)"
-      | "translateXY(uint32,uint32)"
+      | "translatePos"
+      | "translateXY"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -138,6 +140,10 @@ export interface IWorldInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "getPOS", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getPlayerPosition",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getRecord(uint256,bytes32[],bytes32)",
     values: [
@@ -268,11 +274,11 @@ export interface IWorldInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "translateXY(uint32)",
+    functionFragment: "translatePos",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "translateXY(uint32,uint32)",
+    functionFragment: "translateXY",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
 
@@ -292,6 +298,10 @@ export interface IWorldInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getPOS", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getPlayerPosition",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getRecord(uint256,bytes32[],bytes32)",
     data: BytesLike
@@ -368,11 +378,11 @@ export interface IWorldInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "translateXY(uint32)",
+    functionFragment: "translatePos",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "translateXY(uint32,uint32)",
+    functionFragment: "translateXY",
     data: BytesLike
   ): Result;
 
@@ -489,6 +499,10 @@ export interface IWorld extends BaseContract {
     ): Promise<[string] & { schema: string }>;
 
     getPOS(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getPlayerPosition(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -638,12 +652,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    "translateXY(uint32)"(
+    translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    "translateXY(uint32,uint32)"(
+    translateXY(
       x: PromiseOrValue<BigNumberish>,
       y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -688,6 +702,10 @@ export interface IWorld extends BaseContract {
   ): Promise<string>;
 
   getPOS(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getPlayerPosition(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -837,12 +855,12 @@ export interface IWorld extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  "translateXY(uint32)"(
+  translatePos(
     value: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  "translateXY(uint32,uint32)"(
+  translateXY(
     x: PromiseOrValue<BigNumberish>,
     y: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -889,6 +907,8 @@ export interface IWorld extends BaseContract {
     getPOS(
       overrides?: CallOverrides
     ): Promise<[number, number] & { x: number; y: number }>;
+
+    getPlayerPosition(overrides?: CallOverrides): Promise<number>;
 
     "getRecord(uint256,bytes32[],bytes32)"(
       table: PromiseOrValue<BigNumberish>,
@@ -1026,12 +1046,12 @@ export interface IWorld extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "translateXY(uint32)"(
+    translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[number, number] & { x: number; y: number }>;
 
-    "translateXY(uint32,uint32)"(
+    translateXY(
       x: PromiseOrValue<BigNumberish>,
       y: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1109,6 +1129,10 @@ export interface IWorld extends BaseContract {
     ): Promise<BigNumber>;
 
     getPOS(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getPlayerPosition(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1258,12 +1282,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    "translateXY(uint32)"(
+    translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    "translateXY(uint32,uint32)"(
+    translateXY(
       x: PromiseOrValue<BigNumberish>,
       y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1309,6 +1333,10 @@ export interface IWorld extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getPOS(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getPlayerPosition(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1458,12 +1486,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    "translateXY(uint32)"(
+    translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    "translateXY(uint32,uint32)"(
+    translateXY(
       x: PromiseOrValue<BigNumberish>,
       y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
