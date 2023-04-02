@@ -6,9 +6,13 @@ pragma solidity >=0.8.0;
 interface IPlayerSystem {
   function setPlayerPos(uint32 index) external;
 
-  function translatePos(uint32 value) external returns (uint32 x, uint32 y);
+  function getPlayerPosition() external returns (uint32);
 
-  function translateXY(uint32 x, uint32 y) external returns (uint32 pos);
+  function translatePos(uint32 value) external returns (uint32, uint32);
+
+  function translateXY(uint32 x, uint32 y) external returns (uint32);
+
+  function getPOS() external returns (uint32, uint32);
 
   function moveRight() external;
 

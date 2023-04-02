@@ -9,23 +9,23 @@ contract PlayerSystem is System {
     PlayerPos.set(_msgSender(), index);
   }
 
-  // function getPlayerPosition() public returns (uint32) {
-  //   uint32 pos = PlayerPos.get();
-  //   return pos;
-  // }
+  function getPlayerPosition() public returns (uint32) {
+    uint32 pos = PlayerPos.get(_msgSender());
+    return pos;
+  }
 
-  function translatePos(uint32 value) public returns (uint32 x, uint32 y) {
+  function translatePos(uint32 value) public returns (uint32, uint32) {
     uint32 x = value % 80;
     uint32 y = value / 80;
     return (x, y);
   }
 
-  function translateXY(uint32 x, uint32 y) public returns (uint32 pos) {
+  function translateXY(uint32 x, uint32 y) public returns (uint32) {
     uint32 pos = (y * 80) + x;
     return pos;
   }
 
-  function getPOS() internal returns (uint32 x, uint32 y) {
+  function getPOS() public returns (uint32, uint32) {
     uint32 pos;
     uint32 x;
     uint32 y;

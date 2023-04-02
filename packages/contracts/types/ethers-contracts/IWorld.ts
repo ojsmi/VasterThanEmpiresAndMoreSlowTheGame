@@ -9,7 +9,6 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -36,6 +35,8 @@ export interface IWorldInterface extends utils.Interface {
     "deleteRecord(bytes16,bytes16,bytes32[])": FunctionFragment;
     "getField(uint256,bytes32[],uint8)": FunctionFragment;
     "getKeySchema(uint256)": FunctionFragment;
+    "getPOS()": FunctionFragment;
+    "getPlayerPosition()": FunctionFragment;
     "getRecord(uint256,bytes32[],bytes32)": FunctionFragment;
     "getRecord(uint256,bytes32[])": FunctionFragment;
     "getSchema(uint256)": FunctionFragment;
@@ -72,6 +73,8 @@ export interface IWorldInterface extends utils.Interface {
       | "deleteRecord(bytes16,bytes16,bytes32[])"
       | "getField"
       | "getKeySchema"
+      | "getPOS"
+      | "getPlayerPosition"
       | "getRecord(uint256,bytes32[],bytes32)"
       | "getRecord(uint256,bytes32[])"
       | "getSchema"
@@ -135,6 +138,11 @@ export interface IWorldInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getKeySchema",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(functionFragment: "getPOS", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getPlayerPosition",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getRecord(uint256,bytes32[],bytes32)",
@@ -287,6 +295,11 @@ export interface IWorldInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "getField", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getKeySchema",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getPOS", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getPlayerPosition",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -457,7 +470,7 @@ export interface IWorld extends BaseContract {
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -484,6 +497,14 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string] & { schema: string }>;
+
+    getPOS(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getPlayerPosition(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     "getRecord(uint256,bytes32[],bytes32)"(
       table: PromiseOrValue<BigNumberish>,
@@ -652,7 +673,7 @@ export interface IWorld extends BaseContract {
     namespace: PromiseOrValue<BytesLike>,
     file: PromiseOrValue<BytesLike>,
     funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   "deleteRecord(uint256,bytes32[])"(
@@ -679,6 +700,14 @@ export interface IWorld extends BaseContract {
     table: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  getPOS(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getPlayerPosition(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   "getRecord(uint256,bytes32[],bytes32)"(
     table: PromiseOrValue<BigNumberish>,
@@ -875,6 +904,10 @@ export interface IWorld extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getPOS(overrides?: CallOverrides): Promise<[number, number]>;
+
+    getPlayerPosition(overrides?: CallOverrides): Promise<number>;
+
     "getRecord(uint256,bytes32[],bytes32)"(
       table: PromiseOrValue<BigNumberish>,
       key: PromiseOrValue<BytesLike>[],
@@ -1014,7 +1047,7 @@ export interface IWorld extends BaseContract {
     translatePos(
       value: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[number, number] & { x: number; y: number }>;
+    ): Promise<[number, number]>;
 
     translateXY(
       x: PromiseOrValue<BigNumberish>,
@@ -1065,7 +1098,7 @@ export interface IWorld extends BaseContract {
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -1091,6 +1124,14 @@ export interface IWorld extends BaseContract {
     getKeySchema(
       table: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPOS(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getPlayerPosition(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     "getRecord(uint256,bytes32[],bytes32)"(
@@ -1261,7 +1302,7 @@ export interface IWorld extends BaseContract {
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -1287,6 +1328,14 @@ export interface IWorld extends BaseContract {
     getKeySchema(
       table: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPOS(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getPlayerPosition(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     "getRecord(uint256,bytes32[],bytes32)"(
